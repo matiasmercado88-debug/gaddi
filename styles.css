@@ -43,14 +43,14 @@
   --font-text:    'Chivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
   /* Escala tipográfica.
-     Recalibrada para el copy nuevo. El h1 aprobado tiene 63 caracteres
-     ("Una historia familiar que nace en La Rioja y continúa en cada mesa"),
-     así que los 83 px de la v5 lo partían en seis renglones dentro de la
-     columna del hero. Baja a 56 px y la columna se ensancha: tres líneas.
-     El display baja de 100 a 74 px por el mismo motivo — los dos titulares
-     de display del copy pasan de 49 a 60 caracteres. */
+     Recalibrada dos veces. Con el copy largo el h1 tenía 63 caracteres y hubo
+     que bajarlo a 56 px para que entrara en tres líneas. La versión corta lo
+     dejó en 39 ("Una historia familiar nacida en La Rioja"), así que vuelve a
+     subir a 70 px y la columna del hero se angosta de 46 a 40 rem: dos líneas
+     y un titular que pesa lo que tiene que pesar. El display se mantiene en
+     74 px — el de la presentación sigue teniendo 70 caracteres. */
   --display:  clamp(2.3rem, 5.1vw, 4.6rem);   /*  74px a 1440 */
-  --h1:       clamp(2rem, 3.9vw, 3.5rem);     /*  56px */
+  --h1:       clamp(2.5rem, 4.9vw, 4.4rem);   /*  70px */
   --h2:       clamp(1.65rem, 2.7vw, 2.4rem);  /*  38px */
   --h2-sm:    clamp(1.45rem, 2.2vw, 2rem);    /*  32px, secciones utilitarias */
   --h3:       clamp(1.2rem, 1.7vw, 1.5rem);   /*  24px */
@@ -393,8 +393,6 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .link-arrow:hover { color: var(--marron); }
 .link-arrow:hover .arrow { transform: translateX(4px); }
 .link-arrow:active { transform: translateY(1px); }
-.link-arrow--light { color: var(--naranja-claro); }
-.link-arrow--light:hover { color: var(--marfil); }
 
 /* ========================================================================
    HEADER
@@ -522,17 +520,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
     linear-gradient(0deg, rgba(24, 17, 11, 0.42) 0%, rgba(24, 17, 11, 0) 38%);
 }
 .hero__inner { width: 100%; }
-.hero__text { max-width: 46rem; color: var(--marfil); }
-
-/* La marca sobre el titular. El h1 aprobado no nombra a Gaddi; el logotipo
-   acá le devuelve el protagonismo al hero sin tocar una palabra del copy. */
-.hero__brand { margin-bottom: clamp(20px, 2.4vw, 30px); }
-.hero__brand-mark {
-  width: clamp(122px, 12vw, 166px);
-  height: auto;
-  color: var(--marfil);
-  filter: drop-shadow(0 2px 22px rgba(18, 12, 7, 0.5));
-}
+.hero__text { max-width: 40rem; color: var(--marfil); }
 
 .hero__title {
   font-size: var(--h1);
@@ -580,8 +568,10 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    APERTURA — "Detrás de cada producto hay una historia que merece ser
    contada". Primer momento de display; el segundo es el cierre.
    ======================================================================== */
+/* El pie va en 0 porque la sección termina con el lockup, que se monta sobre
+   el campo azul de Origen. El aire de cierre lo pone el margen del lockup. */
 .opening {
-  padding-block: var(--gap-lg) var(--gap-md-b);
+  padding-block: var(--gap-lg) 0;
   background: var(--marfil);
   /* `100vw` cuenta la barra de scroll, así que el sangrado se pasa ~8 px.
      Recortar acá lo deja al ras del borde sin ensanchar el documento. */
@@ -617,58 +607,9 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 /* ========================================================================
    LA RELACIÓN ENTRE GADDI Y OLIVZÁN
    ======================================================================== */
-.relation {
-  padding-block: var(--gap-md) 0;
-  background: var(--marfil);
-}
-.relation__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
-  gap: clamp(32px, 4.5vw, 68px);
-  align-items: start;
-}
-.relation__text p { color: var(--cuerpo); max-width: 58ch; }
-.relation__text p + p { margin-top: 14px; }
 
-.relation__aside {
-  border-top: 2px solid var(--marron);
-  padding-top: 22px;
-}
-.relation__aside-title { font-size: var(--h3); font-weight: 600; margin-bottom: 18px; }
-.relation__aside-note {
-  font-size: var(--small);
-  color: var(--cuerpo);
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--arena-3);
-}
 
-/* Dos pasos, no una lista de viñetas: el copy dice "primero" y "después",
-   así que el orden ES la información. */
-.steps { display: grid; gap: 14px; counter-reset: paso; }
-.steps li {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: 14px;
-  align-items: start;
-  font-size: var(--small);
-  color: var(--cuerpo);
-}
-.steps__n {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px; height: 28px;
-  flex-shrink: 0;
-  border-radius: 50%;
-  background: var(--terracota);
-  color: var(--marfil);
-  font-family: var(--font-text);
-  font-weight: 700;
-  font-size: 0.78rem;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
+
 
 /* --- Lockup de respaldo ------------------------------------------------
    Reemplaza a `.brand-switch` de la v4/v5, que era Olivzán → [flecha] →
@@ -722,46 +663,10 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .endorse__gaddi { width: clamp(96px, 10vw, 128px); height: auto; color: var(--marron); }
 
 /* ========================================================================
-   MENSAJE DE TRANSICIÓN
-   ======================================================================== */
-.message {
-  padding-block: calc(var(--gap-md) + var(--pill-overlap)) var(--gap-md-b);
-  background: var(--marfil-2);
-}
-.message__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(32px, 4.5vw, 72px);
-  align-items: start;
-}
-.message__text p { color: var(--cuerpo); max-width: 56ch; }
-.message__text p + p { margin-top: 14px; }
-
-/* La marca paraguas, como nota al costado del mensaje. No es una sección
-   propia: el copy la trae aparte, pero dice lo mismo desde otro ángulo, y
-   dos secciones seguidas de prosa sobre "qué es Gaddi" es una de más. */
-.umbrella {
-  background: var(--arena-3);
-  border-left: 3px solid var(--terracota);
-  border-radius: 0 var(--radio-md) var(--radio-md) 0;
-  padding: clamp(24px, 2.8vw, 34px) clamp(22px, 2.6vw, 32px);
-}
-.umbrella__title { font-size: var(--h3); font-weight: 600; margin-bottom: 16px; }
-.umbrella p { font-size: var(--small); color: var(--cuerpo); }
-.umbrella p + p { margin-top: 12px; }
-.umbrella__close {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 1.05rem;
-  line-height: 1.35;
-  color: var(--marron);
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--arena-2);
-}
-
-/* ========================================================================
    ORIGEN — campo azul noche + panorámica
+   El lockup de la sección anterior se monta sobre este borde, así que el
+   panel abre con espacio de más arriba: sin eso la lámina crema le caía
+   encima al eyebrow. `overflow: clip` no va acá — recortaría el lockup.
    ======================================================================== */
 .territory {
   display: grid;
@@ -771,7 +676,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 }
 .territory__panel {
   color: var(--marfil);
-  padding: clamp(52px, 6.4vw, 96px) clamp(36px, 4vw, 64px) clamp(52px, 6.4vw, 96px) var(--margin-lateral);
+  padding: calc(clamp(52px, 6.4vw, 96px) + var(--pill-overlap)) clamp(36px, 4vw, 64px) clamp(52px, 6.4vw, 96px) var(--margin-lateral);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -779,11 +684,13 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .territory__panel .section-title { margin-bottom: 22px; }
 .territory__text { color: var(--arena); margin-bottom: 14px; max-width: 52ch; font-size: var(--small); }
 
+/* Tres condiciones, no cuatro: la versión corta del copy nombra clima seco,
+   amplitud térmica y tradición olivícola. */
 .conditions {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 0;
-  margin: 24px 0 22px;
+  margin: 24px 0 0;
   border-top: 1px solid rgba(207, 196, 177, 0.32);
 }
 .conditions li {
@@ -796,14 +703,6 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 }
 .conditions li + li { border-left: 1px solid rgba(207, 196, 177, 0.32); padding-left: 14px; }
 
-.territory__claim {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: clamp(1.1rem, 1.5vw, 1.32rem);
-  line-height: 1.35;
-  color: var(--marfil);
-  max-width: 42ch;
-}
 
 .territory__media { position: relative; min-height: 440px; }
 .territory__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
@@ -811,7 +710,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 /* ========================================================================
    ARAUCO
    ======================================================================== */
-.variety { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil); }
+.variety { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil-2); }
 /* Las proporciones se reequilibraron al ensanchar el container: con 0.8/1.2
    sobre 1520 px la columna de texto medía 830 y su medida de lectura tope
    500, así que quedaban 330 px de aire suelto contra el borde. La foto crece
@@ -852,7 +751,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    ======================================================================== */
 .products {
   padding-block: var(--gap-sm) var(--gap-sm-b);
-  background-color: var(--marfil-2);
+  background-color: var(--marfil);
 }
 .products .overline { color: var(--terracota-osc); }
 .products__lead { color: var(--cuerpo); margin-top: 14px; font-size: var(--small); }
@@ -905,13 +804,33 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 }
 .product__text { color: var(--cuerpo); font-size: var(--small); }
 .product__text + .product__text { margin-top: 12px; }
+
+/* "El mismo producto. Ahora, con el nombre de la familia que lo hace."
+   Once palabras que reemplazan a la sección de transición entera. Es la única
+   vez que la narrativa toca el tema fuera del hero y del lockup, así que pesa
+   como pieza y no como párrafo. */
 .product__claim {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.02rem;
-  color: var(--terracota-osc);
-  margin-top: 14px;
+  font-size: clamp(1.05rem, 1.4vw, 1.22rem);
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--terracota);
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px solid var(--arena);
 }
+/* Puente a Comercios: la navegación no lleva ahí (el copy no lo incluye) y
+   la red de distribuidores es la sección con más valor comercial. Éste es su
+   acceso principal, además del pie. */
+.products__note {
+  margin-top: clamp(28px, 3vw, 42px);
+  padding-top: clamp(22px, 2.4vw, 30px);
+  border-top: 1px solid var(--arena-2);
+  color: var(--cuerpo);
+  font-size: var(--small);
+}
+.products__note .link-arrow { display: inline-flex; vertical-align: baseline; }
 
 /* La ficha va a todo el ancho del producto, no dentro de la columna de texto:
    con 250 px no entra una tabla de formatos sin romperse. */
@@ -946,25 +865,18 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .process__media img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radio-xs); }
 .process__text .section-title { margin-bottom: 22px; }
 .process__text > p { color: var(--arena); margin-bottom: 14px; max-width: 56ch; font-size: var(--small); }
-
-/* Las tres frases del copy como medida horizontal. La repetición de
-   "importa" es el argumento; en un párrafo se pierde, en tres filas se ve. */
-.matters {
-  display: grid;
-  gap: 0;
-  margin: 26px 0 24px;
-  border-top: 1px solid rgba(207, 196, 177, 0.30);
-  max-width: 46ch;
-}
-.matters li {
+.process__claim {
   font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.05rem, 1.5vw, 1.28rem);
-  line-height: 1.3;
-  color: var(--marfil);
-  padding: 12px 0;
-  border-bottom: 1px solid rgba(207, 196, 177, 0.30);
+  font-weight: 600;
+  font-size: clamp(1.15rem, 1.6vw, 1.4rem) !important;
+  line-height: 1.35;
+  color: var(--marfil) !important;
+  max-width: 30ch !important;
+  margin-top: 24px !important;
+  padding-top: 22px;
+  border-top: 1px solid rgba(207, 196, 177, 0.30);
 }
+
 
 /* ========================================================================
    DEL PAISAJE AL PRODUCTO — grilla asimétrica de cuatro imágenes.
@@ -975,14 +887,11 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    función", "menos imágenes, mejor elegidas").
    ======================================================================== */
 .landscape { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil); }
-.landscape__head {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: clamp(20px, 4vw, 72px);
-  align-items: end;
-  margin-bottom: clamp(40px, 5vw, 72px);
-}
-.landscape__lead { color: var(--cuerpo); max-width: 46ch; font-size: var(--small); }
+/* Un solo bloque: la versión corta del copy no trae bajada para esta sección
+   y no se inventó una. El titular sale de la última línea de ORIGEN y el
+   resto lo dicen los pies de foto. */
+.landscape__head { margin-bottom: clamp(40px, 5vw, 72px); }
+.landscape__head .section-title { max-width: 26ch; }
 
 /* Marco de imagen sin CLS. La sombra apoya la foto sobre el papel, no le
    dibuja un contorno: si al quitarla el elemento se lee como recuadro, es una
@@ -1021,17 +930,6 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .landscape__grid > li:nth-child(3) { grid-column: 2 / 8; }
 .landscape__grid > li:nth-child(4) { grid-column: 9 / 13; margin-top: clamp(0px, 5vw, 88px); }
 
-/* El cierre de la sección va debajo de las fotos: el copy explica el paisaje
-   después de mostrarlo, no antes. Tres columnas para que no sea un muro. */
-.landscape__foot {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(20px, 3vw, 44px);
-  margin-top: clamp(48px, 6vw, 88px);
-  padding-top: clamp(26px, 3vw, 40px);
-  border-top: 1px solid var(--arena);
-}
-.landscape__foot p { color: var(--cuerpo); font-size: var(--small); }
 
 /* ========================================================================
    NUESTROS PRINCIPIOS — seis, en dos filas de tres
@@ -1334,9 +1232,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    ======================================================================== */
 .story__inner { max-width: 94ch; }
 .product__body { display: flex; flex-direction: column; min-width: 0; }
-.contact__data,
-.relation__text, .relation__aside,
-.message__text, .trade__intro { min-width: 0; }
+.contact__data, .trade__intro { min-width: 0; }
 .trade__network { margin-top: clamp(28px, 3vw, 44px); }
 .region + .region { margin-top: 0; }   /* el hueco lo pone el gap de .network */
 .region__list { display: grid; }
@@ -1472,9 +1368,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   .opening__inner { grid-template-columns: 1fr; gap: 36px; }
   .opening__media img { height: clamp(280px, 46vw, 440px); }
 
-  .relation__inner { grid-template-columns: 1fr; gap: 32px; }
-  .message__inner  { grid-template-columns: 1fr; gap: 32px; }
-
+  
   .territory { grid-template-columns: 1fr; }
   .territory__panel { order: 2; padding: clamp(44px, 6.5vw, 68px) var(--margin-lateral); }
   .territory__media { order: 1; min-height: 300px; height: 44vw; max-height: 420px; }
