@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gaddi — Aceite de oliva de Villa Mazán, La Rioja · Olivzán es parte de Gaddi</title>
+  <meta name="description" content="Aceite de oliva de Villa Mazán, Arauco, La Rioja. Gaddi reúne el origen, el trabajo familiar y las líneas del proyecto. Olivzán es parte de Gaddi: ambas marcas conviven durante la transición.">
+  <!-- VISTA PREVIA. Quitar esta línea el día que el sitio salga a producción. -->
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#F4F0E7">
+
+  <!-- Vista previa de enlace. La imagen va en JPEG, no en WebP: varios
+       clientes de mensajería no renderizan WebP en el preview y la miniatura
+       queda vacía. 1200x630 es el tamaño canónico de Open Graph.
+       La ruta es relativa: cuando haya dominio definitivo conviene pasarla a
+       absoluta (https://…/assets/og/gaddi_preview.jpg), porque varios
+       scrapers no resuelven rutas relativas. -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Olivzán es parte de Gaddi.">
+  <meta property="og:description" content="Una historia familiar que nace en La Rioja y continúa en cada mesa. Aceites de oliva de Villa Mazán, Arauco.">
+  <meta property="og:image" content="assets/og/gaddi_preview.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <!-- Petrona (titulares) + Chivo (texto/UI). Sin ejes italic: el énfasis va por peso, color o tracking. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Petrona:wght@500;600;700&family=Chivo:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="preload" as="image" href="assets/photos/hero_botellas_gaddi-1600.webp"
+        imagesrcset="assets/photos/hero_botellas_gaddi-1600.webp 1600w, assets/photos/hero_botellas_gaddi-2400.webp 2400w"
+        imagesizes="100vw" fetchpriority="high">
+  <!-- Baldosa de marca. El logotipo suelto se dibuja hueco sobre fondo claro,
+       o sea invisible en una pestana clara, que es la de por defecto. -->
+  <link rel="icon" href="assets/brand/gaddi_favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body id="top">
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+  <!-- Logotipo original como sprite. La geometría es la del SVG oficial, sin
+       tocar; sólo el wordmark toma `currentColor` para poder ir crema sobre
+       fondo oscuro y marrón sobre marfil. El archivo original, servido como
+       <img>, se dibuja hueco sobre fondo claro: sólo sobrevive el contorno. -->
+  <svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0"><symbol id="gaddi-mark" viewBox="0 0 1382.7 399.55">
+<path fill="none" d="M714.87,242.9c-9.11,15.84-13.29,42.4-1.19,58.53,16.58,22.09,51.87,16.71,68.01-3.15l5.27-81.79c-28.42-11.05-56.81-.14-72.09,26.41Z"/>
+  <path fill="none" d="M455.81,311.67c3.64,14.7,56.29,6.91,58.33-16.61-14.78-6.78-62.23.89-58.33,16.61Z"/>
+  <path fill="none" d="M1003.71,227.99c-17.15,14.6-22.82,35.68-19.66,58.87,1.82,13.36,8.94,23.81,23.28,27.9,18.52,5.29,38.74-1.19,52.65-15.37l5.29-81.18c-20.67-9.89-44.9-4.4-61.56,9.78Z"/>
+  <path fill="currentColor" d="M1166.43,25.6c-25.33,1.78-49.79,6.14-74.22,11.45-9.64,2.09-11.4,9.36-12.07,17.46l-6.86,83.39c-74.7-13.25-145.76,23.96-184.46,89.16l5.91-91.16,7.51-102.08c-9.53-17.31-69.01.9-87.93,3.52-4.11,2.41-13.02,5.92-13.34,10.29l-6.63,90.41c-74.36-13.3-147,30.82-179.82,95.17l-1.58-29.85c-2.66-50.22-57.52-70.39-99.54-69.82-43.1.59-84.57,10.51-123.99,27.3-9.74,4.15-12.51,15.17-9.99,24.39,4.56,16.63,18.99,49.98,40.58,39.09,25.63-12.93,53.37-24.74,82.28-15.05,7.16,2.4,12.43,8.52,12.23,16.46-62-6.39-120.08,6.24-154.79,60.52l6.4-81.05c.82-10.34-6.11-20.3-17.39-20.53-19.54-.4-38.88.32-58.64,1.37l-64.41,3.4c-7.67.4-21.3,3.76-23.35,12.69-4.43,19.28-6.55,38.59-8.45,58.17-.68,7.02,8.56,12.25,14.67,12.31l53.89.57-4.24,33.32c-44.06,5.84-94.36,5.71-125.89-28.58-22.3-24.25-18.21-76.82-1.25-107.23,26.1-46.82,88.34-69.37,140.75-65.29,18.4,1.43,33.23,8.33,48.72,17.34,6.19,3.6,20.18-.02,23.92-6.38,13.53-23.01,22.26-47.36,25.99-74.41-17.54-13.01-37.51-19.27-58.99-22.71-48.06-7.7-96.31-2.28-142.51,12.64-54.62,17.65-100.1,51.01-132.88,97.57C7.2,170.47-5.4,217.95,2.15,268.06c5.04,33.44,20.02,63.13,46.34,85.34,24.27,20.48,53.55,34.44,85.07,40.7,67.44,13.4,130.53-.02,195.72-17.71,14.48-3.93,21.63-14.06,25.02-30.06,26.2,65.68,105.38,58.49,157.47,32.07,4.17,8.97,11.29,13.67,20.83,13.96,27.92.84,76.41,7.15,74.61-29.5-.42-8.46.16-16.68,1.61-25.43,15.03,26.04,34.86,45.29,63.1,54.2,37.19,11.73,76.62,7.51,110.87-10,4.42,18.81,58.48,14.5,70.58,13,34.82-4.34,21.79-44.53,28.2-68.89,12.14,31.37,31.57,53.17,61.75,64.77,29.6,11.38,62.72,11.94,93.03,1.54l23.83-8.18c7.39,21.25,59.64,14.01,74.82,10.15,14.64-3.73,19.02-13.73,20.17-27.7l27.36-330.73c.58-6.99-10.96-10.33-16.09-9.97ZM340.51,351.55c-40.59,13.68-81.87,21.93-124.75,25.43-26.14.75-50.47-.1-75.63-5.81-54.19-11.36-102.13-49.32-113.31-105.34C7.9,171.1,66.07,89.49,150.25,51c56.97-26.05,150.17-38.23,207.23-6.95-4.83,21.73-11.98,41.56-22.13,60.87-12.15-8.48-22.59-15.17-36.6-18.05-46.96-9.66-97.38-1.05-136.82,26.56-34.01,23.81-55.02,60.92-56.94,101.96-1.04,22.35,1.97,43.83,14.19,62.34,32.05,48.53,103.39,47.36,154.67,35.75l8.57-61.67-58.75,1.51c-2.05.05-6.42-1.65-7.87-2.67-1.74-1.23-2.15-5.97-2.29-8.88l5.39-40.11,136.17-5.8-14.56,155.7ZM602.76,218.76l-5.8,102.42c-.89,15.66-1.39,30.23-1.31,46.29-19.47,6.81-40.38,6.93-61.53,2.01l-5.39-22.94c-30.26,21.75-65.76,33.49-102.37,27.42-21.81-3.61-41.16-16.51-48.79-38.3-6.6-18.84-4.55-39.08,5.45-55.1,29.88-47.86,102.62-50.95,153.06-40.48,2.23-12.24,3.18-25.64-3.56-36.5-6.52-10.49-19.47-15.42-31.77-16.54-50.19-4.59-79.2,20.44-82.64,19.53-11.47-3.02-19.21-26.79-22.88-39.7,33.37-15.35,67.66-22.58,103.71-24.91,34.94-2.25,85.46,5.17,99.23,42.73,3.85,10.5,5.24,22.79,4.6,34.07ZM873.1,263.46l-8.32,107.68c-18.2,5.14-36.1,6.36-54.53,2.95-11.96-2.21-6.94-16.7-11.57-25.2-33.23,26.25-74.71,34.04-114.03,21.57-38.08-12.08-60.34-45.83-60.08-85.55.18-27.5,6.08-52.1,21.98-74.97,36.95-53.15,103.19-75.34,166.2-57.67l8.52-106.89,45.46-8.73,24.01-1.28-7.81,98.89-9.84,129.2ZM1150.22,268.15l-8.44,104.63c-9.85,3.93-58.58,8.44-60.81-2.57l-3.96-19.5c-33.86,21.94-65.36,32.18-106.4,22.91-42.4-9.58-71.22-45.79-71.83-89.07-.38-26.94,6.12-51.91,21.78-74.09,38.7-55.58,106.57-76.24,170.94-57.22l9.28-109.16c23.19-4.51,45.56-8.55,70.1-9.85l-20.64,233.92Z"/>
+  <path fill="currentColor" d="M1291.47,74.37c-1.15-32.42-6.67-45.94-24.79-74.37-14.36,8.88-26.53,18.21-38.11,29.91-26.51,26.78-35.2,73.89-8.42,100.79,3.32,3.34,5.86,6.29,9.08,10.15l-26.29,4.34c-7.71,1.27-20.22,7-20.92,16.03l-3.66,47.47-12.63,166.27c-.75,9.93,4.76,18.6,15.79,19.82,19.14,2.12,39.45,1.43,60.23.49,11.44-.51,19.24-7.36,23.38-16.92l11.54-140.79,5.92-80.64c51.77,1.77,80.11-38.98,100.12-82.41-27.68-10.81-65.11-13.67-91.23-.14ZM1231.01,48.96c7.54-14.61,19.2-26.15,33.94-34.46,1.86,6.62,4.37,10.39,7.03,15.31,16.78,31.07,11.52,71.07-17.97,93.69l-1.48-61.69c-6.47,20.15-7.13,40.59-7.89,63.33-21.92-19.65-26.91-50.47-13.63-76.19ZM1254.69,364.41l-.52,6.95c-.43,5.85-54.39,3.42-60.91,3.13-2.02-.09-5.59-2.04-6.61-3.47-1.03-1.43-.86-5.59-.56-8.32l16.29-207.09c22.33-2.78,44.94-3.13,68.12-2.14l-15.81,210.94ZM1266.38,130.02l40.68-22.5-35.74,10.08c8.18-8.64,11.35-18.27,17.1-27.45,12.23-19.54,58.62-19,80.56-11.31-22.42,41.35-52.65,72.23-102.61,51.19Z"/>
+  <path fill="currentColor" d="M213.51,241.76c.13,2.91.54,7.65,2.29,8.88,1.45,1.02,5.83,2.72,7.87,2.67l58.75-1.51-8.57,61.67c-51.27,11.61-122.61,12.78-154.67-35.75-12.22-18.5-15.23-39.99-14.19-62.34,1.92-41.03,22.93-78.15,56.94-101.96,39.43-27.6,89.86-36.22,136.82-26.56,14.01,2.88,24.45,9.58,36.6,18.05,10.15-19.31,17.3-39.15,22.13-60.87-57.06-31.28-150.26-19.1-207.23,6.95C66.07,89.49,7.9,171.1,26.82,265.83c11.18,56.03,59.12,93.98,113.31,105.34,25.15,5.71,49.49,6.56,75.63,5.81,42.89-3.5,84.16-11.74,124.75-25.43l14.56-155.7-136.17,5.8-5.39,40.11Z"/>
+  <path fill="currentColor" d="M1091.48,153.24c-64.37-19.02-132.23,1.64-170.94,57.22-15.65,22.18-22.16,47.15-21.78,74.09.62,43.28,29.43,79.49,71.83,89.07,41.04,9.27,72.54-.96,106.4-22.91l3.96,19.5c2.23,11.01,50.96,6.49,60.81,2.57l8.44-104.63,20.64-233.92c-24.54,1.3-46.91,5.34-70.1,9.85l-9.28,109.16ZM1080.18,296.97c-13.75,17.9-31.96,28.86-55.37,30.62-19.95,1.51-40.09-6.7-49.01-24.8-8.2-16.63-7.19-36.3-2.9-54.01,7-28.9,29.05-48.33,57.21-55.5,20.52-5.22,40.85-2.45,57.17,11.35l-7.09,92.34Z"/>
+  <path fill="currentColor" d="M866.74,36.64l-45.46,8.73-8.52,106.89c-63.01-17.67-129.25,4.52-166.2,57.67-15.9,22.87-21.8,47.47-21.98,74.97-.26,39.72,22,73.47,60.08,85.55,39.31,12.47,80.8,4.67,114.03-21.57,4.64,8.5-.39,22.98,11.57,25.2,18.43,3.41,36.32,2.19,54.53-2.95l8.32-107.68,9.84-129.2,7.81-98.89-24.01,1.28ZM802.83,293.97c-16.52,26.75-49.35,39.72-80.62,28.79-31.56-11.03-32.04-55.84-20.7-83.49,16.7-40.73,72.81-64.45,107.58-34.51l-6.26,89.2Z"/>
+  <path fill="currentColor" d="M498.92,141.97c-36.06,2.33-70.35,9.56-103.71,24.91,3.67,12.91,11.42,36.68,22.88,39.7,3.44.91,32.45-24.12,82.64-19.53,12.3,1.12,25.25,6.05,31.77,16.54,6.75,10.86,5.8,24.26,3.56,36.5-50.43-10.47-123.18-7.37-153.06,40.48-10,16.01-12.04,36.26-5.45,55.1,7.63,21.79,26.98,34.69,48.79,38.3,36.62,6.07,72.12-5.67,102.37-27.42l5.39,22.94c21.15,4.92,42.06,4.79,61.53-2.01-.08-16.06.42-30.63,1.31-46.29l5.8-102.42c.64-11.28-.75-23.57-4.6-34.07-13.78-37.56-64.29-44.98-99.23-42.73ZM531.62,299.22c-15.61,30.59-75.53,42.93-86.42,14.85-2.99-7.72-.61-17.44,4.68-23.62,17.65-20.66,59.03-20.57,83.24-14.65l-1.49,23.43Z"/>
+  <path fill="currentColor" d="M1202.38,155.61l-16.29,207.09c-.3,2.73-.47,6.89.56,8.32,1.03,1.43,4.59,3.38,6.61,3.47,6.52.28,60.48,2.72,60.91-3.13l.52-6.95,15.81-210.94c-23.18-.99-45.79-.64-68.12,2.14Z"/>
+  <path fill="currentColor" d="M1030.11,193.29c-28.17,7.17-50.22,26.6-57.21,55.5-4.29,17.71-5.3,37.38,2.9,54.01,8.92,18.1,29.06,26.31,49.01,24.8,23.42-1.77,41.63-12.73,55.37-30.62l7.09-92.34c-16.32-13.8-36.65-16.57-57.17-11.35ZM1059.97,299.39c-13.91,14.18-34.13,20.66-52.65,15.37-14.34-4.09-21.46-14.54-23.28-27.9-3.15-23.19,2.51-44.28,19.66-58.87,16.66-14.18,40.9-19.67,61.56-9.78l-5.29,81.18Z"/>
+  <path fill="currentColor" d="M701.51,239.27c-11.34,27.65-10.86,72.46,20.7,83.49,31.27,10.93,64.09-2.04,80.62-28.79l6.26-89.2c-34.77-29.95-90.88-6.22-107.58,34.51ZM781.69,298.28c-16.14,19.85-51.43,25.24-68.01,3.15-12.1-16.12-7.92-42.69,1.19-58.53,15.28-26.55,43.67-37.47,72.09-26.41l-5.27,81.79Z"/>
+  <path fill="currentColor" d="M449.87,290.44c-5.28,6.18-7.67,15.9-4.68,23.62,10.89,28.08,70.81,15.75,86.42-14.85l1.49-23.43c-24.21-5.92-65.59-6-83.24,14.65ZM455.81,311.67c-3.9-15.72,43.56-23.39,58.33-16.61-2.05,23.52-54.69,31.31-58.33,16.61Z"/>
+  <path fill="#4e7115" d="M1244.65,125.15c.75-22.74,1.41-43.18,7.89-63.33l1.48,61.69c29.48-22.62,34.75-62.62,17.97-93.69-2.66-4.93-5.18-8.69-7.03-15.31-14.75,8.31-26.4,19.85-33.94,34.46-13.28,25.72-8.29,56.54,13.63,76.19Z"/>
+  <path fill="#4e7115" d="M1288.43,90.14c-5.75,9.18-8.92,18.81-17.1,27.45l35.74-10.08-40.68,22.5c49.96,21.05,80.19-9.84,102.61-51.19-21.94-7.69-68.33-8.23-80.56,11.31Z"/>
+</symbol></svg>
+
+  <!-- ================================ HEADER ================================ -->
+  <header class="site-header" data-header>
+    <div class="site-header__inner">
+      <a class="brand" href="#top" aria-label="Gaddi — Inicio">
+        <svg class="brand__mark" viewBox="0 0 1382.7 399.55" role="img" aria-label="Gaddi"><use href="#gaddi-mark"></use></svg>
+      </a>
+
+      <nav class="nav" aria-label="Principal">
+        <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-menu" data-nav-toggle>
+          <span data-nav-toggle-text>Menú</span>
+          <span class="nav__toggle-bars" aria-hidden="true"><span></span><span></span></span>
+        </button>
+
+        <div class="nav__panel" id="nav-menu" data-nav-menu>
+          <!-- Los siete destinos del copy menos dos: "Inicio" ya es el logotipo
+               y "Contacto" ya es el botón, con otra jerarquía visual. Los cinco
+               que quedan apuntan a secciones reales, no a un <li> dentro de otra. -->
+          <ul class="nav__list" data-nav-list>
+            <li><a href="#historia">Nuestra historia</a></li>
+            <li><a href="#olivzan">Olivzán</a></li>
+            <li><a href="#origen">Origen</a></li>
+            <li><a href="#productos">Productos</a></li>
+            <li><a href="#comercios">Comercios</a></li>
+          </ul>
+          <a class="btn btn--primary nav__cta-mobile" href="#contacto">Contacto</a>
+        </div>
+      </nav>
+
+      <a class="btn btn--primary nav__cta" href="#contacto">Contacto</a>
+    </div>
+  </header>
+
+  <main id="contenido">
+
+    <!-- ================================= HERO ================================= -->
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero__photo"
+           src="assets/photos/hero_botellas_gaddi-1600.webp"
+           srcset="assets/photos/hero_botellas_gaddi-1600.webp 1600w,
+                   assets/photos/hero_botellas_gaddi-2400.webp 2400w"
+           sizes="100vw"
+           alt="Botellas y bidones de aceite de oliva Gaddi sobre una piedra, con el olivar y la sierra de Villa Mazán al fondo"
+           fetchpriority="high" decoding="async">
+      <span class="hero__overlay" aria-hidden="true"></span>
+
+      <div class="container hero__inner">
+        <div class="hero__text">
+          <!-- El titular aprobado no nombra a Gaddi. La marca entra acá, sobre
+               el h1, para que el hero conserve protagonismo de marca sin tocarle
+               una palabra al texto. -->
+          <p class="hero__brand">
+            <svg class="hero__brand-mark" viewBox="0 0 1382.7 399.55" role="img" aria-label="Gaddi"><use href="#gaddi-mark"></use></svg>
+          </p>
+          <h1 class="hero__title" id="hero-title">Una historia familiar que nace en La Rioja y continúa en cada mesa</h1>
+          <span class="rule" aria-hidden="true"></span>
+          <p class="hero__lead">Desde Villa Mazán producimos aceite de oliva a partir de una relación concreta con la tierra, el cultivo y una tradición familiar que se sostiene con el tiempo.</p>
+          <p class="hero__lead">Gaddi reúne ese recorrido, le da un nombre común y abre una nueva etapa para los productos que nacen de esa historia.</p>
+          <p class="hero__claim">Olivzán es parte de Gaddi.</p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#historia">Conocé nuestra historia <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn btn--ghost" href="#productos">Ver nuestros productos <span class="arrow" aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </div>
+
+      <a class="hero__scroll" href="#apertura">Seguir conociendo <span aria-hidden="true">↓</span></a>
+    </section>
+
+    <!-- ================================ APERTURA ================================ -->
+    <section class="opening" id="apertura" aria-labelledby="opening-title">
+      <!-- El titular sale de la columna y toma el ancho del container: a 100 px
+           no entra en 525 px, y encerrado ahí no sería un momento de display
+           sino un titular grande apretado. -->
+      <header class="container opening__head reveal">
+        <p class="overline">Gaddi</p>
+        <h2 class="section-title section-title--display" id="opening-title">Detrás de cada producto hay una historia que merece ser contada.</h2>
+      </header>
+
+      <div class="container opening__inner">
+        <div class="opening__text reveal">
+          <p class="lead-body">Gaddi no nace de cero. Nace de una familia, de una tierra y de años de trabajo alrededor del olivo.</p>
+          <p>También nace de Olivzán, el aceite que muchas personas ya conocen, compran y llevan a su mesa todos los días.</p>
+          <p>Durante mucho tiempo, Olivzán fue la forma visible de una historia más amplia. Detrás estaban el origen, la producción, el paisaje de Villa Mazán y una familia vinculada al trabajo olivícola.</p>
+          <p>Gaddi aparece para reunir todo eso bajo una misma identidad. No para borrar lo anterior, sino para darle continuidad.</p>
+          <p>No para reemplazar de manera brusca una marca conocida, sino para mostrar con mayor claridad quiénes están detrás, de dónde viene el producto y hacia dónde quiere crecer el proyecto.</p>
+          <p class="claim">Olivzán, una marca de Gaddi.</p>
+        </div>
+
+        <figure class="opening__media reveal">
+          <img src="assets/photos/transicion_rama-1100.webp"
+               alt="Rama de olivo con aceitunas Arauco a contraluz, junto al curso de agua del olivar"
+               width="1100" height="733" loading="lazy" decoding="async">
+        </figure>
+      </div>
+    </section>
+
+    <!-- ====================== LA RELACIÓN ENTRE GADDI Y OLIVZÁN ====================== -->
+    <section class="relation" id="olivzan" aria-labelledby="relation-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="overline">La relación entre Gaddi y Olivzán</p>
+          <h2 class="section-title" id="relation-title">Olivzán es parte de Gaddi.</h2>
+        </header>
+
+        <div class="relation__inner">
+          <div class="relation__text reveal">
+            <p>Olivzán forma parte de la historia de Gaddi y seguirá ocupando un lugar central durante esta etapa. Es el aceite que muchos clientes reconocen por su nombre, por su envase y por su presencia en comercios y cocinas de todos los días.</p>
+            <p>Por eso, la incorporación de Gaddi no se plantea como un cambio repentino. Durante un tiempo, ambas marcas van a convivir.</p>
+            <p>Olivzán mantendrá su identidad, mientras Gaddi comenzará a aparecer como la marca que reúne y respalda el proyecto completo. Esta convivencia permitirá que quienes ya conocen el producto puedan reconocerlo sin confusiones y, al mismo tiempo, empezar a familiarizarse con el nombre Gaddi.</p>
+          </div>
+
+          <div class="relation__aside reveal">
+            <h3 class="relation__aside-title">La transición será gradual.</h3>
+            <ol class="steps">
+              <li><span class="steps__n" aria-hidden="true">1</span>Primero, Gaddi acompañará a Olivzán.</li>
+              <li><span class="steps__n" aria-hidden="true">2</span>Después, irá ocupando un lugar más visible en los envases, la comunicación y los puntos de venta.</li>
+            </ol>
+            <p class="relation__aside-note">El objetivo no es pedirle al consumidor que olvide una marca para aprender otra. Es permitirle conocer la relación entre ambas.</p>
+          </div>
+        </div>
+
+        <p class="pullquote reveal">Olivzán no deja de ser Olivzán. Empieza a mostrar que es parte de Gaddi.</p>
+      </div>
+
+      <!-- Lockup de respaldo, montado sobre el límite de sección como la píldora
+           de la referencia. NO es un relevo: no hay flecha ni "de X a Y", porque
+           el copy dice exactamente lo contrario — Gaddi contiene a Olivzán, no
+           lo sustituye. Olivzán arriba, Gaddi debajo como marca que respalda.
+           ASSET GAP: no hay vectorial de Olivzán; va como texto en Petrona. -->
+      <div class="endorse" role="img" aria-label="Olivzán, una marca de Gaddi">
+        <span class="endorse__olivzan">Olivzán</span>
+        <span class="endorse__nexo">una marca de</span>
+        <svg class="endorse__gaddi" viewBox="0 0 1382.7 399.55" aria-hidden="true"><use href="#gaddi-mark"></use></svg>
+      </div>
+    </section>
+
+    <!-- ========================== MENSAJE DE TRANSICIÓN ========================== -->
+    <section class="message" aria-labelledby="message-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="overline">Una nueva etapa</p>
+          <h2 class="section-title" id="message-title">Una nueva etapa, construida sobre lo que ya existe.</h2>
+        </header>
+
+        <div class="message__inner">
+          <div class="message__text reveal">
+            <p>Los cambios de marca suelen presentarse como grandes comienzos. En este caso, preferimos hablar de continuidad.</p>
+            <p>Porque el producto sigue naciendo en el mismo lugar. La historia familiar sigue siendo la misma. La relación con el olivo y con Villa Mazán sigue intacta.</p>
+            <p>Lo que cambia es la manera de presentar y ordenar esa historia. Gaddi reúne bajo un mismo nombre el origen, el trabajo familiar y los productos que forman parte del proyecto. Olivzán es uno de ellos.</p>
+            <p>Por eso, durante esta etapa, vas a encontrar ambas marcas compartiendo envases, piezas de comunicación y espacios de venta.</p>
+            <p>No es una contradicción. Es una forma de hacer el cambio con tiempo, con claridad y sin perder las referencias que los clientes ya conocen.</p>
+          </div>
+
+          <aside class="umbrella reveal" aria-labelledby="umbrella-title">
+            <h3 class="umbrella__title" id="umbrella-title">Una marca que reúne el proyecto completo</h3>
+            <p>Gaddi nace como la marca que integra el trabajo familiar, el origen riojano y las distintas líneas de productos. Su función no es borrar lo construido anteriormente, sino darle una estructura más clara.</p>
+            <p>Bajo el nombre Gaddi conviven una historia, una forma de producir y una mirada de largo plazo. También conviven productos diferentes, pensados para distintos momentos y necesidades.</p>
+            <p>Olivzán forma parte de ese universo. Gaddi permite reunirlo con nuevas propuestas, nuevas presentaciones y una identidad capaz de acompañar el crecimiento futuro.</p>
+            <p class="umbrella__close">Es una marca que parte de lo conocido, pero mira hacia adelante.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================= ORIGEN ================================= -->
+    <section class="territory" id="origen" aria-labelledby="territory-title">
+      <div class="territory__panel reveal">
+        <p class="overline overline--on-dark">Origen</p>
+        <h2 class="section-title section-title--light" id="territory-title">Villa Mazán, una tierra marcada por el olivo.</h2>
+        <p class="territory__text">Nuestro aceite nace en Villa Mazán, en el departamento de Arauco, provincia de La Rioja. Es una región atravesada por una larga tradición olivícola y por una relación cotidiana con la tierra.</p>
+        <p class="territory__text">El paisaje, el clima seco y la amplitud térmica forman parte de las condiciones naturales en las que crecen los olivos. Pero el origen no se reduce a una característica geográfica: también es una forma de entender el trabajo. Conocer los tiempos del cultivo, observar cada cosecha, comprender que el resultado final depende de muchas decisiones pequeñas tomadas mucho antes de que el aceite llegue a una botella.</p>
+        <p class="territory__text">En Villa Mazán, el olivo no es una escenografía construida para una campaña. Es parte de la vida diaria: del paisaje, de la economía regional, de la memoria familiar y del trabajo de quienes viven allí.</p>
+        <ul class="conditions">
+          <li>Paisaje</li>
+          <li>Clima seco</li>
+          <li>Amplitud térmica</li>
+          <li>Tradición olivícola</li>
+        </ul>
+        <p class="territory__claim">Gaddi nace de ese lugar y busca llevar algo de ese origen a cada producto.</p>
+      </div>
+      <figure class="territory__media">
+        <img src="assets/photos/photo_07.webp"
+             alt="Panorámica de las hileras de olivos que se extienden hacia la sierra de Villa Mazán"
+             loading="lazy" decoding="async">
+      </figure>
+    </section>
+
+    <!-- ================================= ARAUCO ================================= -->
+    <section class="variety" id="arauco" aria-labelledby="variety-title">
+      <div class="container variety__inner">
+        <figure class="variety__media reveal">
+          <img src="assets/photos/photo_01.webp"
+               alt="Aceitunas Arauco verdes en la rama, en detalle"
+               loading="lazy" decoding="async">
+        </figure>
+
+        <div class="variety__text reveal">
+          <p class="overline">Arauco</p>
+          <h2 class="section-title" id="variety-title">Una variedad ligada a la identidad argentina.</h2>
+          <p>La aceituna Arauco ocupa un lugar especial dentro de la tradición olivícola argentina. Es una variedad de fuerte vínculo con La Rioja y con la región en la que trabajamos. Tiene carácter, identidad y una presencia que la distingue.</p>
+          <p>Hablar de Arauco no es sumar una palabra técnica a la etiqueta. Es reconocer una parte fundamental del origen del producto: contar que detrás del aceite hay una variedad concreta, cultivada en un territorio específico y ligada a una historia productiva profundamente argentina.</p>
+          <p>En Gaddi entendemos el aceite como un producto cercano. No como un lujo lejano ni como un objeto reservado para ocasiones excepcionales. El aceite forma parte de la cocina cotidiana: está en la comida compartida, en una preparación sencilla, en una ensalada, en una salsa o en el pan sobre la mesa.</p>
+          <p class="pullquote pullquote--inline">La calidad no necesita alejarse de la vida diaria. Puede estar presente todos los días.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= NUESTRA HISTORIA ============================= -->
+    <section class="story" id="historia" aria-labelledby="story-title">
+      <div class="container story__inner">
+        <header class="section-head reveal">
+          <p class="overline">Nuestra historia</p>
+          <h2 class="section-title" id="story-title">Una familia, un territorio y una forma de trabajar.</h2>
+        </header>
+
+        <div class="story__cols reveal">
+          <div>
+            <p>Gaddi lleva el apellido de la familia que está detrás del proyecto. Ese apellido no aparece como un recurso decorativo ni como una historia agregada después para darle épica a la marca.</p>
+            <p>Es el nombre de quienes sostienen la producción, conocen el recorrido del producto y participan de una tradición ligada al olivo.</p>
+          </div>
+          <div>
+            <p>A lo largo del tiempo, el trabajo familiar fue tomando distintas formas. Olivzán fue una de las expresiones más importantes de ese recorrido: permitió que el aceite llegara a comercios, distribuidores y hogares, construyendo un reconocimiento que hoy forma parte del valor del proyecto.</p>
+            <p>Gaddi nace para ordenar esa historia, reunir sus distintas partes y proyectarla hacia el futuro. Es la continuidad de algo que ya estaba en marcha: una manera de darle mayor coherencia al origen, a los productos y a la relación con quienes los eligen.</p>
+          </div>
+        </div>
+
+        <p class="pullquote reveal">Es una nueva identidad, pero no un nuevo comienzo.</p>
+
+        <!-- Firma: hasta validar el apellido con el cliente, sólo el lugar. -->
+        <p class="signature">Villa Mazán, La Rioja</p>
+      </div>
+    </section>
+
+    <!-- ================================ PRODUCTOS ================================ -->
+    <section class="products" id="productos" aria-labelledby="products-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <p class="overline">Productos</p>
+          <h2 class="section-title" id="products-title">Aceites nacidos en La Rioja.</h2>
+          <p class="products__lead">Nuestros productos parten de una misma idea: acercar aceites vinculados a un origen real, elaborados con cuidado y pensados para formar parte de la vida cotidiana. No buscamos convertir el aceite en un objeto inaccesible; buscamos que conserve su identidad, su calidad y su relación con el territorio, sin alejarse de las personas que lo usan todos los días.</p>
+          <p class="products__lead">Cada línea expresa una parte diferente del proyecto Gaddi.</p>
+        </header>
+
+        <div class="products__grid">
+          <!-- Olivzán va primero, como en el copy: es la marca que el cliente
+               ya reconoce y la que sostiene el mensaje de continuidad. -->
+          <article class="product reveal">
+            <h3 class="product__kicker product__kicker--olivzan">Olivzán · Aceite de oliva para todos los días</h3>
+            <div class="product__row">
+              <figure class="product__media">
+                <img src="assets/products/olivzan_linea-1200.webp"
+                     srcset="assets/products/olivzan_linea-700.webp 700w,
+                             assets/products/olivzan_linea-1200.webp 1200w"
+                     sizes="(max-width: 900px) 80vw, 24vw"
+                     alt="Línea Olivzán: botellas de 250 cc, 500 cc y 1 litro, y bidones de 2, 3 y 5 litros de aceite de oliva virgen"
+                     loading="lazy" decoding="async">
+              </figure>
+              <div class="product__body">
+                <p class="product__text">Olivzán es un aceite cercano, versátil y pensado para el uso cotidiano. Forma parte de la historia de la familia y de la relación construida durante años con comercios, distribuidores y consumidores.</p>
+                <p class="product__text">Es un producto reconocido, presente en muchas mesas y elegido por quienes buscan incorporar aceite de oliva a su cocina habitual. Durante esta nueva etapa, Olivzán seguirá ocupando ese lugar: su incorporación al universo Gaddi permitirá mostrar con mayor claridad el origen, la familia y el trabajo que están detrás.</p>
+                <p class="product__claim">Olivzán, una marca de Gaddi.</p>
+              </div>
+            </div>
+            <dl class="spec">
+              <div><dt>Denominación</dt><dd>Aceite de oliva virgen</dd></div>
+              <div><dt>Formatos</dt><dd class="nums">250 cc · 500 cc · 1 L · 2 L · 3 L · 5 L</dd></div>
+              <div><dt>Envase</dt><dd>Vidrio y PET</dd></div>
+            </dl>
+            <a class="link-arrow" href="#contacto">Consultá por las presentaciones de Olivzán <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+
+          <article class="product reveal">
+            <h3 class="product__kicker">Gaddi · Aceite de oliva virgen extra</h3>
+            <div class="product__row">
+              <figure class="product__media">
+                <img src="assets/products/gaddi_linea-1200.webp"
+                     srcset="assets/products/gaddi_linea-700.webp 700w,
+                             assets/products/gaddi_linea-1200.webp 1200w"
+                     sizes="(max-width: 900px) 80vw, 24vw"
+                     alt="Línea Gaddi: botellas de vidrio de 250, 500 y 750 cc, bidón de 2 litros y lata de 3 litros"
+                     loading="lazy" decoding="async">
+              </figure>
+              <div class="product__body">
+                <p class="product__text">La línea Gaddi representa una expresión más directa del origen, la selección y el carácter del producto. Es una propuesta que profundiza la relación con Villa Mazán, con la aceituna Arauco y con el trabajo familiar.</p>
+                <p class="product__text">Su identidad busca poner en primer plano el territorio del que nace y la historia que lo sostiene. Gaddi marca el inicio de una nueva etapa para el proyecto, con una mirada puesta en el desarrollo de futuras líneas y presentaciones.</p>
+              </div>
+            </div>
+            <dl class="spec">
+              <div><dt>Denominación</dt><dd>Aceite de oliva virgen extra</dd></div>
+              <div><dt>Formatos</dt><dd class="nums">250 cc · 500 cc · 750 cc · 2 L · 3 L</dd></div>
+              <div><dt>Envase</dt><dd>Vidrio, PET y lata</dd></div>
+            </dl>
+            <a class="link-arrow" href="#contacto">Consultá por la línea Gaddi <span class="arrow" aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================ EL PROCESO ================================ -->
+    <section class="process" id="proceso" aria-labelledby="process-title">
+      <div class="container process__inner">
+        <figure class="process__media reveal">
+          <img src="assets/photos/photo_05.webp"
+               alt="Una mano sostiene tres aceitunas Arauco todavía unidas a la rama"
+               loading="lazy" decoding="async">
+        </figure>
+
+        <div class="process__text reveal">
+          <p class="overline overline--on-dark">El proceso</p>
+          <h2 class="section-title section-title--light" id="process-title">Del cultivo a la mesa.</h2>
+          <p>El aceite comienza mucho antes de la botella. Empieza en el olivo, en el cuidado del cultivo y en la observación de cada etapa de crecimiento.</p>
+          <p>Continúa con la cosecha, la selección de la materia prima y el trabajo necesario para transformar la aceituna en aceite. Cada instancia influye en el producto final. Por eso, entendemos la producción como una cadena de decisiones que debe sostenerse con atención y responsabilidad.</p>
+
+          <!-- Las tres frases del copy como medida, no como párrafo: es el
+               único lugar de la página donde la repetición ES el argumento. -->
+          <ul class="matters">
+            <li>El origen importa.</li>
+            <li>La variedad importa.</li>
+            <li>El momento de la cosecha importa.</li>
+          </ul>
+
+          <p>También importa la manera en que el producto se conserva, se presenta y llega hasta el consumidor. Nuestro trabajo busca respetar ese recorrido y preservar las características naturales de la materia prima. Sin exageraciones. Sin convertir el proceso en un ritual misterioso reservado para iniciados.</p>
+          <p>Hay conocimiento, experiencia y cuidado. Y también hay un producto cotidiano, hecho para usarse.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================== DEL PAISAJE AL PRODUCTO ========================== -->
+    <section class="landscape" id="paisaje" aria-labelledby="landscape-title">
+      <div class="container">
+        <header class="landscape__head reveal">
+          <div>
+            <p class="overline">Del paisaje al producto</p>
+            <h2 class="section-title" id="landscape-title">Cada botella conserva algo del lugar del que viene.</h2>
+          </div>
+          <p class="landscape__lead">El paisaje de La Rioja no aparece en Gaddi como una simple imagen de fondo. Es parte de la identidad de la marca porque también forma parte del producto.</p>
+        </header>
+
+        <!-- Grilla asimétrica: cuatro imágenes con proporciones y alturas
+             distintas sobre doce columnas. Reemplaza al mosaico denso de seis
+             piezas a sangre. El pie de foto no es decorativo: dice qué función
+             cumple cada imagen, que es lo que `CLAUDE.md` pide de cada una. -->
+        <ul class="landscape__grid">
+          <li class="reveal">
+            <figure>
+              <div class="frame frame--portrait">
+                <img src="assets/photos/photo_02.webp" alt="Aceitunas Arauco verdes madurando en la rama, en primer plano" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="figcap">
+                <span class="figcap__fn">Fruto</span>
+                <span class="figcap__txt">La variedad que da carácter al aceite.</span>
+              </figcaption>
+            </figure>
+          </li>
+          <li class="reveal">
+            <figure>
+              <div class="frame frame--wide">
+                <img src="assets/photos/photo_03.webp" alt="Suelo agrietado y seco con pequeños brotes verdes" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="figcap">
+                <span class="figcap__fn">Suelo</span>
+                <span class="figcap__txt">Tierra seca y brotes nuevos: el clima de la región.</span>
+              </figcaption>
+            </figure>
+          </li>
+          <li class="reveal">
+            <figure>
+              <div class="frame frame--wide">
+                <img src="assets/photos/photo_04.webp" alt="Curso de agua que atraviesa la vegetación junto al olivar" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="figcap">
+                <span class="figcap__fn">Agua</span>
+                <span class="figcap__txt">Curso de agua junto al olivar.</span>
+              </figcaption>
+            </figure>
+          </li>
+          <li class="reveal">
+            <figure>
+              <div class="frame frame--portrait">
+                <img src="assets/photos/photo_09.webp" alt="Copas de los olivos con aceitunas recortadas contra el cielo" loading="lazy" decoding="async">
+              </div>
+              <figcaption class="figcap">
+                <span class="figcap__fn">Olivar</span>
+                <span class="figcap__txt">Las copas del olivo contra el cielo de Arauco.</span>
+              </figcaption>
+            </figure>
+          </li>
+        </ul>
+
+        <div class="landscape__foot reveal">
+          <p>El clima, la tierra y la historia olivícola de la región atraviesan cada etapa de la producción. Las montañas, los caminos, los olivares y la amplitud del paisaje construyen una relación particular con el tiempo.</p>
+          <p>Nada ocurre de manera inmediata. El cultivo tiene sus ciclos. La cosecha tiene su momento. La marca también.</p>
+          <p>Por eso, la transición entre Olivzán y Gaddi se plantea con la misma lógica. Sin apurar procesos que necesitan tiempo. Sin desprenderse de lo anterior antes de construir algo nuevo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================ NUESTROS PRINCIPIOS ============================ -->
+    <section class="principles" id="principios" aria-labelledby="principles-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <h2 class="section-title" id="principles-title">Nuestros principios.</h2>
+        </header>
+
+        <ul class="principles__list">
+          <li class="principle reveal">
+            <h3 class="principle__title">
+              <span class="principle__icon principle__icon--oliva" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19c-1-8 5-14 14-14 1 8-5 15-14 14Z"/><path d="M5.5 18.5c3-4.5 6.5-7 10.5-8.2"/></svg>
+              </span>
+              Origen
+            </h3>
+            <p class="principle__text">Trabajamos desde Villa Mazán, en una región con una identidad olivícola propia. El territorio no es una promesa abstracta: es el lugar concreto donde comienza cada producto.</p>
+          </li>
+
+          <li class="principle reveal">
+            <h3 class="principle__title">
+              <span class="principle__icon principle__icon--terracota" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.4" cy="9.6" r="3"/><path d="M3.4 20.4v-1.6a3.6 3.6 0 0 1 3.6-3.6h2.8a3.6 3.6 0 0 1 3.6 3.6v1.6"/><circle cx="16.8" cy="7.6" r="2.4"/><path d="M15.6 13.4h1.8a3.2 3.2 0 0 1 3.2 3.2v1.4"/></svg>
+              </span>
+              Familia
+            </h3>
+            <p class="principle__text">Gaddi lleva el apellido de quienes sostienen el proyecto. La familia forma parte de la producción, de la historia y de las decisiones que construyen la marca.</p>
+          </li>
+
+          <li class="principle reveal">
+            <h3 class="principle__title">
+              <span class="principle__icon principle__icon--azul" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4 14.4 8.6 16.2a3.8 3.8 0 0 1-5.4-5.4l2.6-2.6a3.8 3.8 0 0 1 5.4 0"/><path d="m13.6 9.6 1.8-1.8a3.8 3.8 0 0 1 5.4 5.4l-2.6 2.6a3.8 3.8 0 0 1-5.4 0"/></svg>
+              </span>
+              Continuidad
+            </h3>
+            <p class="principle__text">Olivzán no desaparece. Se incorpora progresivamente a Gaddi, conservando el reconocimiento y la relación construida con sus clientes.</p>
+          </li>
+
+          <li class="principle reveal">
+            <h3 class="principle__title">
+              <span class="principle__icon principle__icon--terracota" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3.6 12.4h16.8a8.4 8.4 0 0 1-16.8 0Z"/><path d="M2.6 20.4h18.8"/><path d="M9.2 8.8c0-1.5 1.6-1.7 1.6-3.2M13.6 8.8c0-1.5 1.6-1.7 1.6-3.2"/></svg>
+              </span>
+              Cercanía
+            </h3>
+            <p class="principle__text">Queremos producir aceites que puedan formar parte de la cocina cotidiana. Productos honestos, accesibles y pensados para usarse.</p>
+          </li>
+
+          <li class="principle reveal">
+            <h3 class="principle__title">
+              <span class="principle__icon principle__icon--oliva" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5s6 6.2 6 10.3a6 6 0 0 1-12 0C6 9.7 12 3.5 12 3.5Z"/><path d="M9.6 14.2a2.6 2.6 0 0 0 2.4 2.4"/></svg>
+              </span>
+              Calidad
+            </h3>
+            <p class="principle__text">La calidad se construye en cada etapa. Desde el cultivo hasta la presentación final, buscamos cuidar el producto sin alejarnos de su carácter cotidiano.</p>
+          </li>
+
+          <li class="principle reveal">
+            <h3 class="principle__title">
+              <span class="principle__icon principle__icon--azul" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.2 19.4 6v5.4c0 4.2-3 7.7-7.4 9.4-4.4-1.7-7.4-5.2-7.4-9.4V6Z"/><path d="m9.2 11.8 2 2 3.6-3.6"/></svg>
+              </span>
+              Identidad
+            </h3>
+            <p class="principle__text">Cada producto debe expresar de dónde viene, quién lo hace y qué lugar ocupa dentro de la historia de Gaddi.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ======================= COMERCIOS Y DISTRIBUIDORES ======================= -->
+    <section class="trade" id="comercios" aria-labelledby="trade-title">
+      <div class="container">
+        <header class="section-head section-head--split reveal">
+          <div>
+            <p class="overline">Comercios y distribuidores</p>
+            <h2 class="section-title" id="trade-title">Seguimos trabajando con el mismo compromiso.</h2>
+          </div>
+          <div class="trade__intro">
+            <p>Los comercios, distribuidores y mayoristas forman una parte fundamental del recorrido de nuestros productos. Son quienes los acercan a cada localidad, los presentan en el punto de venta y sostienen el vínculo cotidiano con los consumidores.</p>
+            <p>Durante la transición, Olivzán continuará presente en el canal comercial. Gaddi comenzará a incorporarse progresivamente en envases, materiales de venta, catálogos y comunicaciones.</p>
+            <p>Esta convivencia está pensada para facilitar el reconocimiento del producto y evitar confusiones. El objetivo es que cada comercio pueda explicar de manera simple la relación entre ambas marcas:</p>
+            <p class="claim">Olivzán es parte de Gaddi.</p>
+            <p>El producto conserva su origen y su continuidad comercial. Lo que se amplía es la identidad que lo respalda.</p>
+          </div>
+        </header>
+
+        <div class="trade__network reveal">
+          <div class="trade__network-head">
+            <h3 class="trade__network-title">Dónde encontrarnos hoy</h3>
+            <p>Nueve distribuidores en Buenos Aires, la costa atlántica, Entre Ríos y Santa Fe. La red crece; la producción no se mueve de Villa Mazán.</p>
+          </div>
+
+          <!-- Red real de distribución. Datos provistos por el cliente; los teléfonos
+               se muestran tal como fueron entregados, sin inventar prefijos. -->
+          <div class="network">
+            <section class="region" aria-labelledby="r-caba">
+              <h4 class="region__name" id="r-caba">Ciudad de Buenos Aires</h4>
+              <ul class="region__list">
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Capital Federal</p>
+                    <p class="dist__who">Martín de la Torre</p>
+                  </div>
+                  <address class="dist__where">Carlos A. López 3672, Villa Devoto</address>
+                  <div class="dist__contact"><a href="tel:1163358165">11 6335-8165</a></div>
+                </li>
+              </ul>
+            </section>
+
+            <section class="region" aria-labelledby="r-bsas">
+              <h4 class="region__name" id="r-bsas">Buenos Aires</h4>
+              <ul class="region__list">
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Mercado Central</p>
+                    <p class="dist__who">Paralelo 3–20</p>
+                  </div>
+                  <address class="dist__where">De la Poda 2032, Tapiales<br>Nave 3, puesto 20</address>
+                  <div class="dist__contact"><a href="tel:+5491154518309">+54 9 11 5451-8309</a></div>
+                </li>
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Mercado de Abasto — Béccar</p>
+                    <p class="dist__who">Beca Tierra</p>
+                  </div>
+                  <address class="dist__where">Av. Andrés Rolón 2560, Béccar</address>
+                  <div class="dist__contact"><a href="tel:+5491139532905">+54 9 11 3953-2905</a></div>
+                </li>
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Zona Norte — Zárate</p>
+                    <p class="dist__who">Carvan</p>
+                  </div>
+                  <address class="dist__where">Av. Antártida Argentina 2355, Zárate</address>
+                  <div class="dist__contact"><a href="tel:+5493484696134">+54 9 3484 696134</a></div>
+                </li>
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Zona Sur — Quilmes</p>
+                    <p class="dist__who">Mónica Romanos</p>
+                  </div>
+                  <address class="dist__where">Hilario Ascasubi 534, Quilmes</address>
+                  <div class="dist__contact">
+                    <a href="tel:1155725253">11 5572-5253</a>
+                    <a href="mailto:olivzancomercial@gmail.com">olivzancomercial@gmail.com</a>
+                  </div>
+                </li>
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Costa Atlántica — Villa Gesell</p>
+                    <p class="dist__who">Mareapez S.A.</p>
+                  </div>
+                  <address class="dist__where">Boulevard Silvio Gesell y Paseo 113, Villa Gesell</address>
+                  <div class="dist__contact">
+                    <a href="tel:2255472575">2255-472575</a>
+                    <a href="mailto:mareapez1@gmail.com">mareapez1@gmail.com</a>
+                  </div>
+                </li>
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Costa Atlántica — Mar del Plata</p>
+                    <p class="dist__who">Rupes Gelida S.A.</p>
+                  </div>
+                  <address class="dist__where">Mar del Plata</address>
+                  <div class="dist__contact">
+                    <a href="tel:2235969670">223-596-9670</a>
+                    <a href="mailto:aleridao1273@gmail.com">aleridao1273@gmail.com</a>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <section class="region" aria-labelledby="r-er">
+              <h4 class="region__name" id="r-er">Entre Ríos</h4>
+              <ul class="region__list">
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Gualeguaychú</p>
+                    <p class="dist__who">Chuni Gómez</p>
+                  </div>
+                  <address class="dist__where">Caseros 407, Gualeguaychú</address>
+                  <div class="dist__contact">
+                    <a href="tel:03446546401">03446-546401</a>
+                    <a href="mailto:empresachuni@gmail.com">empresachuni@gmail.com</a>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <section class="region" aria-labelledby="r-sf">
+              <h4 class="region__name" id="r-sf">Santa Fe</h4>
+              <ul class="region__list">
+                <li class="dist">
+                  <div class="dist__id">
+                    <p class="dist__zone">Rosario</p>
+                    <p class="dist__who">El Emporio del Ajo S.R.L.</p>
+                  </div>
+                  <address class="dist__where">Wilde 844, Rosario<br>Mercado de Concentración Fisherton 2000, puestos 13, 14, 15, 51, 52 y 53</address>
+                  <div class="dist__contact">
+                    <a href="tel:+5493415032590">+54 9 341 503-2590</a>
+                    <a href="mailto:pascualrullo@gmail.com">pascualrullo@gmail.com</a>
+                  </div>
+                </li>
+              </ul>
+            </section>
+          </div>
+        </div>
+
+        <div class="trade__cta reveal">
+          <p class="trade__cta-text">Para conocer presentaciones, disponibilidad, condiciones de venta o posibilidades de distribución, podés comunicarte con nuestro equipo.</p>
+          <a class="btn btn--primary" href="#contacto">Quiero comercializar Gaddi <span class="arrow" aria-hidden="true">→</span></a>
+          <!-- El copy pide además un botón de WhatsApp. No hay número: enlazar a
+               "#" sería un enlace muerto y un wa.me inventado, peor. Se declara. -->
+          <p class="trade__pending">WhatsApp comercial: <span class="pending" title="Dato pendiente de validación">por confirmar</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================== PREGUNTAS FRECUENTES =========================== -->
+    <section class="faq" id="faq" aria-labelledby="faq-title">
+      <div class="container">
+        <header class="section-head reveal">
+          <h2 class="section-title" id="faq-title">Preguntas frecuentes.</h2>
+        </header>
+
+        <!-- Sin acordeón: en una página cuyo trabajo es explicar una transición,
+             esconder las respuestas detrás de un clic es esconder el mensaje. -->
+        <div class="faq__grid">
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿Olivzán deja de existir?</h3>
+            <p class="faq__a"><b>No.</b> Olivzán continúa formando parte del proyecto y seguirá presente durante esta etapa. La incorporación de Gaddi será progresiva y ambas marcas convivirán en envases y piezas de comunicación.</p>
+          </div>
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿Qué relación existe entre Olivzán y Gaddi?</h3>
+            <p class="faq__a">Olivzán es una marca de Gaddi. Gaddi reúne el origen, el trabajo familiar y las distintas líneas que forman parte del proyecto.</p>
+          </div>
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿El aceite cambió?</h3>
+            <p class="faq__a"><b>No.</b> La aparición de Gaddi corresponde a una transición de marca. El producto conserva su origen, su elaboración y la continuidad que sus clientes ya conocen.</p>
+          </div>
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿Por qué aparecen los dos nombres juntos?</h3>
+            <p class="faq__a">Porque el cambio se realizará de manera gradual. La convivencia entre Olivzán y Gaddi permite que el consumidor reconozca el producto mientras empieza a familiarizarse con la nueva marca.</p>
+          </div>
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿Voy a seguir encontrando Olivzán en los comercios?</h3>
+            <p class="faq__a"><b>Sí.</b> Olivzán seguirá presente durante la transición y continuará formando parte de la propuesta comercial.</p>
+          </div>
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿Gaddi reemplaza a Olivzán?</h3>
+            <p class="faq__a">No de manera inmediata. Gaddi comienza a funcionar como la marca que reúne y respalda el proyecto. Olivzán se incorpora progresivamente dentro de ese sistema.</p>
+          </div>
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿Dónde se produce el aceite?</h3>
+            <p class="faq__a">Nuestro aceite nace en Villa Mazán, departamento de Arauco, provincia de La Rioja.</p>
+          </div>
+          <div class="faq__item reveal">
+            <h3 class="faq__q">¿Qué es la variedad Arauco?</h3>
+            <p class="faq__a">Es una variedad de aceituna fuertemente vinculada con la tradición olivícola argentina y, especialmente, con La Rioja. Forma parte de la identidad productiva de la región.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================== CIERRE ==================================
+         Va ANTES de contacto, no al final de la página. El copy lo trae último,
+         pero un cierre de relato después de un formulario no cierra nada: la
+         persona ya pasó a la acción o ya se fue. Acá remata el argumento —las
+         preguntas quedaron respondidas arriba— y entrega a Contacto, que es lo
+         único que queda por hacer. -->
+    <section class="closing" aria-labelledby="closing-title">
+      <div class="container closing__inner">
+        <div class="closing__head">
+          <svg class="closing__mark" viewBox="0 0 1382.7 399.55" role="img" aria-label="Gaddi"><use href="#gaddi-mark"></use></svg>
+          <h2 class="section-title section-title--display" id="closing-title">Una historia que crece sin dejar atrás su origen.</h2>
+        </div>
+
+        <div class="closing__body">
+          <div class="closing__text">
+            <p>Gaddi reúne una familia, una tierra y una forma de trabajar. Reúne el paisaje de Villa Mazán, la identidad de la aceituna Arauco y la experiencia construida alrededor del aceite de oliva.</p>
+            <p>También reúne a Olivzán: el aceite que muchas personas ya conocen y que seguirá formando parte de esta historia.</p>
+            <p>Porque una nueva etapa no siempre empieza dejando todo atrás. A veces empieza mostrando con mayor claridad lo que ya estaba ahí.</p>
+          </div>
+          <p class="closing__claim">Olivzán es parte de Gaddi.</p>
+          <a class="btn btn--primary" href="#productos">Conocé nuestros productos <span class="arrow" aria-hidden="true">→</span></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================= CONTACTO ================================= -->
+    <section class="contact" id="contacto" aria-labelledby="contact-title">
+      <div class="container contact__inner">
+        <div class="contact__intro reveal">
+          <p class="overline overline--on-oliva">Contacto</p>
+          <h2 class="section-title section-title--light" id="contact-title">Hablemos.</h2>
+          <p class="contact__text">Para consultas sobre productos, presentaciones, compras, distribución o puntos de venta, escribinos. Nuestro equipo se pondrá en contacto para brindarte la información que necesitás.</p>
+        </div>
+
+        <!-- Sin `novalidate` en el HTML: si el JS no carga, valida el navegador.
+             main.js lo agrega al iniciar y toma el control de la validación. -->
+        <form class="contact__form reveal" data-contact-form>
+          <p class="form-pending" data-form-pending>
+            Este formulario todavía no está conectado a un correo. Si necesitás una respuesta hoy,
+            <a href="#comercios">escribile al distribuidor de tu zona</a>.
+          </p>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="c-nombre">Nombre <span class="req" aria-hidden="true">*</span></label>
+              <input id="c-nombre" name="nombre" type="text" autocomplete="name" maxlength="80" required>
+            </div>
+            <div class="field">
+              <label for="c-correo">Correo electrónico <span class="req" aria-hidden="true">*</span></label>
+              <input id="c-correo" name="correo" type="email" inputmode="email" autocomplete="email" maxlength="120" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="field">
+              <label for="c-tel">Teléfono</label>
+              <input id="c-tel" name="telefono" type="tel" inputmode="tel" autocomplete="tel" maxlength="30">
+            </div>
+            <div class="field">
+              <label for="c-localidad">Localidad</label>
+              <input id="c-localidad" name="localidad" type="text" autocomplete="address-level2" maxlength="80">
+            </div>
+          </div>
+
+          <!-- El copy lista cinco campos y no incluye el motivo. Se conserva
+               porque es la única forma de derivar la consulta al canal correcto
+               y porque el copy no lo excluye: agrega Localidad, no quita esto. -->
+          <div class="field">
+            <label for="c-canal">Motivo de la consulta</label>
+            <select id="c-canal" name="canal">
+              <option value="consulta">Consulta general</option>
+              <option value="comercio">Comercio</option>
+              <option value="mayorista">Compra mayorista</option>
+              <option value="gastronomia">Gastronomía</option>
+              <option value="distribucion">Distribución</option>
+              <option value="online">Tienda online</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="c-mensaje">Mensaje <span class="req" aria-hidden="true">*</span></label>
+            <textarea id="c-mensaje" name="mensaje" rows="5" maxlength="1500" aria-describedby="c-mensaje-ayuda" required></textarea>
+            <p class="field__hint" id="c-mensaje-ayuda">Hasta 1500 caracteres.</p>
+          </div>
+
+          <p class="form-note"><span class="req" aria-hidden="true">*</span> Campos obligatorios.</p>
+          <button class="btn btn--on-oliva" type="submit" data-submit>Enviar consulta <span class="arrow" aria-hidden="true">→</span></button>
+          <p class="form-status" data-form-status role="status" aria-live="polite" tabindex="-1" hidden></p>
+        </form>
+
+        <div class="contact__data reveal">
+          <dl class="contact__details">
+            <div>
+              <dt>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21s7-6.1 7-11a7 7 0 1 0-14 0c0 4.9 7 11 7 11Z"/><circle cx="12" cy="10" r="2.6"/></svg>
+                Dónde estamos
+              </dt>
+              <dd>Villa Mazán, Arauco<br>La Rioja, Argentina</dd>
+            </div>
+            <div>
+              <dt>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6.5 3.5h3l1.5 4-2 1.4a12 12 0 0 0 6.1 6.1l1.4-2 4 1.5v3c0 1-.8 1.8-1.8 1.7C10.4 18.8 5.2 13.6 4.8 5.3A1.7 1.7 0 0 1 6.5 3.5Z"/></svg>
+                Teléfono
+              </dt>
+              <dd><span class="pending" title="Dato pendiente de validación">por confirmar</span></dd>
+            </div>
+            <div>
+              <dt>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><rect x="3.2" y="5.2" width="17.6" height="13.6" rx="2"/><path d="m3.6 6.4 8.4 6 8.4-6"/></svg>
+                Correo
+              </dt>
+              <dd><span class="pending" title="Dato pendiente de validación">por confirmar</span></dd>
+            </div>
+            <div>
+              <dt>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3.8 20.2 5 16.4a7.7 7.7 0 1 1 2.9 2.8Z"/></svg>
+                WhatsApp
+              </dt>
+              <dd><span class="pending" title="Dato pendiente de validación">por confirmar</span></dd>
+            </div>
+          </dl>
+
+          <!-- Redes: fuera hasta tener las URLs reales. Tres íconos que saltan al
+               tope de la página son una promesa rota, no un detalle de diseño. -->
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================================= FOOTER ================================= -->
+  <footer class="site-footer">
+    <div class="container site-footer__inner">
+      <div class="site-footer__brand-block">
+        <a class="site-footer__brand" href="#top" aria-label="Gaddi — Volver al inicio">
+          <svg class="site-footer__mark" viewBox="0 0 1382.7 399.55" role="img" aria-label="Gaddi"><use href="#gaddi-mark"></use></svg>
+        </a>
+        <p class="site-footer__desc">Aceites de oliva elaborados en Villa Mazán, La Rioja.</p>
+        <p class="site-footer__claim">Olivzán, una marca de Gaddi.</p>
+      </div>
+
+      <nav class="site-footer__nav" aria-label="Pie de página">
+        <a href="#top">Inicio</a>
+        <a href="#historia">Nuestra historia</a>
+        <a href="#olivzan">Olivzán</a>
+        <a href="#productos">Productos</a>
+        <a href="#origen">Origen</a>
+        <a href="#arauco">Arauco</a>
+        <a href="#comercios">Comercios</a>
+        <a href="#faq">Preguntas frecuentes</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
+      <div class="site-footer__legal">
+        <!-- Redes: Instagram, Facebook y WhatsApp están en el copy pero no hay
+             URLs. Se declaran pendientes en vez de enlazar a ningún lado. -->
+        <p class="site-footer__social">Instagram · Facebook · WhatsApp: <span class="pending" title="Dato pendiente de validación">por confirmar</span></p>
+        <p>© 2026 Gaddi. Todos los derechos reservados.</p>
+        <!-- Los textos legales estan pendientes de revision. Ver las paginas. -->
+        <p class="site-footer__legal-links">
+          <a href="terminos.html">Términos y condiciones</a>
+          <a href="privacidad.html">Política de privacidad</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>

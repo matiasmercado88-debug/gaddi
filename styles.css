@@ -1,0 +1,1639 @@
+/* =====================================================================
+   GADDI — v6 referencia · Sistema visual
+   Dirección: la de `assets/references/00_final_direction.png` (heredada de
+   la v5). Lo que cambia respecto de la v5 es el COPY —
+   `GADDI_copy_web_transicion.md`— y la arquitectura que ese copy pide.
+   Paleta con los hexes exactos de assets/brand/gaddi_palette_original.svg.
+   Petrona (titulares) + Chivo (texto/UI). Sin itálicas: el énfasis va por
+   peso, color o tracking.
+
+   El cambio conceptual que ordena todo el archivo: el copy ya no dice
+   "de Olivzán a Gaddi" sino "Olivzán ES PARTE de Gaddi". Por eso el
+   componente `.brand-switch` (flecha, relevo) desaparece y en su lugar
+   está `.endorse`: un lockup de respaldo, sin flecha.
+   ===================================================================== */
+
+:root {
+  /* Paleta — valores EXACTOS del SVG de marca */
+  --marron:    #4B2E20;
+  --terracota: #973E16;
+  --naranja:   #BA6B32;
+  --oliva:     #6B6F3C;
+  --azul:      #1E2F44;
+  --arena:     #CFC4B1;
+
+  /* Neutros y derivados operativos (no están en el SVG) */
+  --marfil:    #F4F0E7;
+  --marfil-2:  #ECE6D8;
+  --tinta:     #201B17;
+  --arena-2:   #B7AC97;
+  --arena-3:   #E3DCCC;
+  --oliva-osc: #575B31;
+  --marron-osc:#3A241A;
+  --cuerpo:    #3D3025;      /* texto largo sobre marfil/arena: 11,2:1 */
+
+  /* Variantes de acento por contraste. El naranja de marca sobre azul da
+     3,39:1 y sobre marrón 3,06:1: no alcanza para texto chico. El terracota
+     sobre arena da 4,04:1, también corto. Estas dos son las versiones
+     legibles del mismo acento, no colores nuevos. */
+  --naranja-claro: #E3AC7A;  /* sobre azul 6,8:1 · sobre marrón 6,1:1 */
+  --terracota-osc: #7E3212;  /* sobre arena 5,2:1 */
+
+  --font-display: 'Petrona', Georgia, 'Times New Roman', serif;
+  --font-text:    'Chivo', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  /* Escala tipográfica.
+     Recalibrada para el copy nuevo. El h1 aprobado tiene 63 caracteres
+     ("Una historia familiar que nace en La Rioja y continúa en cada mesa"),
+     así que los 83 px de la v5 lo partían en seis renglones dentro de la
+     columna del hero. Baja a 56 px y la columna se ensancha: tres líneas.
+     El display baja de 100 a 74 px por el mismo motivo — los dos titulares
+     de display del copy pasan de 49 a 60 caracteres. */
+  --display:  clamp(2.3rem, 5.1vw, 4.6rem);   /*  74px a 1440 */
+  --h1:       clamp(2rem, 3.9vw, 3.5rem);     /*  56px */
+  --h2:       clamp(1.65rem, 2.7vw, 2.4rem);  /*  38px */
+  --h2-sm:    clamp(1.45rem, 2.2vw, 2rem);    /*  32px, secciones utilitarias */
+  --h3:       clamp(1.2rem, 1.7vw, 1.5rem);   /*  24px */
+  --lead:     clamp(1.02rem, 1.3vw, 1.2rem);
+  --body:     1rem;
+  --small:    0.9rem;
+  --overline: 0.75rem;
+
+  /* Layout.
+     El container sube de 1280 a 1520 y el margen lateral baja de 84 a 68 px.
+     A 1280 sobre una pantalla de 1900 quedaban 394 px de aire muerto a cada
+     lado y la página se leía angosta y flotando; ahora quedan 258. La medida
+     de lectura no se toca — la fijan los `max-width` en ch de cada bloque,
+     no el container, así que lo que se ensancha es la foto, el mosaico y las
+     grillas, que es justo lo que tiene que crecer. */
+  --container:      1520px;
+  --margin-lateral: clamp(20px, 4vw, 68px);
+  --header-h:       82px;
+  --pill-overlap:   clamp(26px, 3.2vw, 38px);
+
+  /* Tres intervalos, no uno. Las secciones de voz respiran; las utilitarias
+     (productos, red de distribución) van más compactas. Un único --gap para
+     toda la página es lo que la hace sonar plana. Con el copy nuevo la
+     página es bastante más larga, así que los intervalos bajan un escalón:
+     el aire por sección se mantiene, el largo total no se dispara. */
+  --gap-sm: clamp(52px, 5.4vw, 78px);
+  --gap-md: clamp(66px, 7.2vw, 106px);
+  --gap-lg: clamp(84px, 9.4vw, 136px);
+  /* Correccion optica: con arriba y abajo iguales, una seccion se lee
+     cargada hacia abajo. El pie va un 12 % mas. */
+  --gap-sm-b: clamp(58px, 6vw, 87px);
+  --gap-md-b: clamp(74px, 8.1vw, 119px);
+  --gap-lg-b: clamp(94px, 10.5vw, 152px);
+
+  /* Distancia exacta del borde derecho del contenido del container al borde
+     del viewport. El truco clásico `50vw - 50%` no sirve para un ítem de
+     grilla: el 50% se resuelve contra la columna y el sangrado se pasa de
+     largo (300 px de desborde a 1440). Esto da el valor justo. */
+  --bleed-right: calc((100vw - min(100vw, var(--container))) / 2 + var(--margin-lateral));
+
+  /* Radios tokenizados: antes convivian 2, 3 y 4 px sin criterio, que es
+     ruido, no intencion. Ahora el radio crece con el tamano del elemento. */
+  --radio-xs:   2px;   /* fotos y laminas */
+  --radio:      4px;   /* botones, campos */
+  --radio-md:   8px;   /* laminas de contenido: lockup, aside, ficha de FAQ */
+  --radio-pill: 999px;
+
+  /* Escala de z-index semantica en vez de 1 / 3 / 100 / 1000 sueltos. */
+  --z-fondo:   -1;
+  --z-base:     1;
+  --z-realce:   3;
+  --z-header: 100;
+  --z-skip:  1000;
+
+  --ease:  cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* -------------------------------- Reset -------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-text);
+  font-size: var(--body);
+  line-height: 1.65;
+  color: var(--tinta);
+  background: var(--marfil);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  accent-color: var(--oliva);
+  caret-color: var(--terracota);
+}
+
+img, svg, picture { display: block; max-width: 100%; }
+img { height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; border: 0; cursor: pointer; }
+ul, ol { list-style: none; padding: 0; }
+input, textarea, select { font: inherit; color: inherit; }
+address { font-style: normal; }
+
+/* Sin itálicas como acento tipográfico. */
+em, i, cite { font-style: normal; font-weight: 700; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.012em;
+  color: var(--marron);
+  text-wrap: balance;
+}
+p { text-wrap: pretty; }
+
+/* Una dirección larga no debe romper su caja. Real acá: "Mercado de
+   Concentración Fisherton 2000, puestos 13, 14, 15…". */
+h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
+
+::selection { background: var(--naranja); color: var(--marfil); }
+
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* ------------------------------ Grano ------------------------------
+   Hubo un grano fijo a todo el viewport en `body::after`, con soft-light.
+   Se quitó tras medirlo: con la CPU frenada 6x, los frames por encima de
+   20 ms pasaban de 6 a 37 sobre 900. Una capa de blend del tamaño de la
+   pantalla tiene que recomponerse contra todo lo que scrollea debajo, en
+   cada frame. Y encima era la capa que menos se veía. Mal negocio.
+
+   Sólo sobre el campo claro de productos. Medido: sobre azul noche un grano
+   al 10 % da sigma 2,06 y sube el luma de 40 a 52 — lava el color en vez de
+   darle textura, porque mezclar hacia gris sobre un fondo oscuro es
+   aclararlo. Sobre un campo claro sí se lee como papel.
+   `isolation: isolate` da el contexto propio de la sección; dentro de él el
+   pseudo-elemento en z-index -1 va sobre el fondo y bajo el texto, y el
+   `mix-blend-mode` de las botellas sigue mezclando contra ese fondo. */
+.products {
+  position: relative;
+  isolation: isolate;
+}
+.products::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-fondo);
+  pointer-events: none;
+  /* Sin `mix-blend-mode` a propósito. Medido con la CPU frenada 6x: el grano
+     solo cuesta 2 frames largos sobre 399, el blend de las botellas solo
+     cuesta 2, pero los dos juntos cuestan 12. Dos multiply dentro del mismo
+     contexto aislado obligan a componer dos veces. Con opacidad plana el
+     resultado sobre un campo claro es casi el mismo y queda un solo blend. */
+  opacity: 0.13;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+/* ------------------------------ Utilidades ------------------------------ */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--margin-lateral);
+}
+
+.overline {
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: var(--overline);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--terracota);
+  margin-bottom: 16px;
+}
+.overline--on-dark  { color: var(--naranja-claro); }
+.overline--on-oliva { color: var(--marfil); }
+
+.rule {
+  display: block;
+  width: 58px;
+  height: 3px;
+  background: var(--naranja);
+  margin: 22px 0;
+  border-radius: var(--radio-xs);
+}
+
+.section-title { font-size: var(--h2); color: var(--marron); }
+/* Los titulares utilitarios bajan medio escalón: no todos los h2 pesan igual. */
+.products .section-title,
+.trade .section-title,
+.faq .section-title,
+.principles .section-title { font-size: var(--h2-sm); }
+.section-title--light { color: var(--marfil); }
+
+/* Los dos momentos de display de la página. La v5 tenía uno solo; el copy
+   nuevo trae una apertura y un cierre que se responden entre sí, y ese par
+   ES la estructura del mensaje: "detrás de cada producto hay una historia"
+   arriba, "una historia que crece sin dejar atrás su origen" abajo. Dos, y
+   ninguno más: si gritan todos, no grita ninguno. */
+.section-title--display {
+  font-size: var(--display);
+  line-height: 1;
+  letter-spacing: -0.028em;
+}
+
+.section-head { max-width: 56ch; margin-bottom: clamp(36px, 4vw, 58px); }
+.section-head--split {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(24px, 4vw, 64px);
+  align-items: start;
+}
+
+/* La línea que el copy repite cinco veces. Es el eje conceptual de toda la
+   página, así que tiene un componente propio y no un <strong> suelto. */
+.claim {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.5vw, 1.32rem);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  color: var(--terracota);
+  margin-top: 22px;
+}
+
+/* Sin barra de color a la izquierda: el énfasis es de escala y color. Y de
+   escala en serio — es la tesis de la transición, no una nota al margen. */
+.pullquote {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.45rem, 2.6vw, 2.3rem);
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  color: var(--terracota);
+  max-width: 24ch;
+  margin: clamp(36px, 4vw, 56px) 0 0;
+}
+/* Dentro de una columna de texto el mismo recurso baja un escalón: si no,
+   compite con el h2 de su propia sección. */
+.pullquote--inline {
+  font-size: clamp(1.25rem, 1.9vw, 1.65rem);
+  max-width: 30ch;
+  margin-top: 30px;
+  padding-top: 22px;
+  border-top: 2px solid var(--arena);
+}
+
+.signature {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: var(--marron);
+  letter-spacing: 0.02em;
+  border-top: 1px solid var(--arena);
+  padding-top: 10px;
+  margin-top: clamp(36px, 4vw, 52px);
+  display: block;
+  width: fit-content;
+}
+
+/* Dato por confirmar. Hereda el color de su superficie en vez de fijar
+   arena: arena sobre marfil es 1,5:1, o sea invisible. */
+.pending {
+  color: inherit;
+  opacity: 0.82;
+  border-bottom: 1px dashed currentColor;
+  padding-bottom: 1px;
+}
+
+.skip-link {
+  position: absolute;
+  left: 16px;
+  top: 16px;
+  z-index: var(--z-skip);
+  background: var(--marron);
+  color: var(--marfil);
+  padding: 10px 18px;
+  border-radius: var(--radio);
+  /* Se anima con transform, no con `top`: mover `top` obliga a recalcular
+     layout en cada frame; `translate` va directo al compositor. */
+  transform: translateY(-200%);
+  transition: transform 0.2s var(--ease);
+}
+.skip-link:focus { transform: translateY(0); }
+
+/* El anillo de foco cambia por superficie. El naranja de marca da 1,32:1
+   sobre oliva y 2,33:1 sobre arena: en el formulario —justo donde más se
+   navega con teclado— era prácticamente invisible. Mínimo 3:1 en todas. */
+:focus-visible {
+  outline: 3px solid var(--focus, var(--naranja));
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+.territory, .process        { --focus: var(--naranja-claro); }  /* 6,8:1 · 6,1:1 */
+.products, .story, .faq     { --focus: var(--terracota-osc); }  /* 5,2:1 */
+.contact, .site-footer      { --focus: var(--marfil); }         /* 4,7:1 · 14,2:1 */
+
+/* -------------------------------- Botones -------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: 0.9rem;
+  line-height: 1;
+  padding: 15px 26px;
+  border-radius: var(--radio);
+  min-height: 48px;
+  transition: background-color 0.25s var(--ease), color 0.25s var(--ease),
+              transform 0.08s var(--ease);
+}
+.btn .arrow { transition: transform 0.25s var(--ease); }
+.btn:hover .arrow { transform: translateX(4px); }
+/* Respuesta táctil: el control cede al apretarlo. Sin esto, un botón que
+   no se mueve al click se siente muerto aunque funcione. */
+.btn:active { transform: translateY(1px); }
+
+.btn--primary { background: var(--oliva); color: var(--marfil); }
+.btn--primary:hover { background: var(--oliva-osc); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--marfil);
+  padding-inline: 4px;
+  min-height: 44px;
+  border-radius: 0;
+  border-bottom: 2px solid transparent;
+}
+.btn--ghost:hover { border-bottom-color: currentColor; }
+
+.btn--on-oliva {
+  background: var(--marfil);
+  color: var(--marron);
+  align-self: flex-start;
+}
+.btn--on-oliva:hover { background: #fff; }
+
+.link-arrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: var(--small);
+  color: var(--terracota);
+  padding-block: 6px;
+  min-height: 44px;   /* eran 32: por debajo del mínimo táctil */
+}
+.link-arrow { transition: color 0.2s var(--ease), transform 0.08s var(--ease); }
+.link-arrow .arrow { transition: transform 0.25s var(--ease); }
+.link-arrow:hover { color: var(--marron); }
+.link-arrow:hover .arrow { transform: translateX(4px); }
+.link-arrow:active { transform: translateY(1px); }
+.link-arrow--light { color: var(--naranja-claro); }
+.link-arrow--light:hover { color: var(--marfil); }
+
+/* ========================================================================
+   HEADER
+   ======================================================================== */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-header);
+  transition: background-color 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.site-header__inner {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: 16px var(--margin-lateral);
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.brand { display: inline-flex; align-items: center; min-height: 44px; margin-right: auto; flex-shrink: 0; }
+.brand__mark {
+  width: 116px;
+  height: auto;
+  color: var(--marfil);           /* wordmark crema sobre el hero */
+  transition: color 0.3s var(--ease);
+}
+
+.nav { display: flex; align-items: center; gap: 22px; }
+.nav__list { display: flex; align-items: center; gap: clamp(14px, 1.9vw, 30px); }
+.nav__list a {
+  font-weight: 500;
+  font-size: var(--small);
+  color: var(--marfil);
+  padding-block: 8px;
+  position: relative;
+  transition: color 0.2s var(--ease);
+}
+/* El área táctil se extiende más allá de la caja visible: sólo en vertical,
+   para no invadir el hueco de 14 px que separa un ítem del siguiente. */
+.nav__list a::before {
+  content: "";
+  position: absolute;
+  inset: -7px 0;
+}
+.nav__list a::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: 2px;
+  width: 100%; height: 1.5px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s var(--ease);
+}
+.nav__list a:hover::after,
+.nav__list a[aria-current]::after { transform: scaleX(1); }
+.nav__cta { flex-shrink: 0; }
+.nav__cta-mobile { display: none; }
+
+.nav__toggle {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: var(--overline);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--marfil);
+  padding: 8px 4px;
+  min-height: 44px;
+  position: relative;
+  z-index: var(--z-realce);
+}
+.nav__toggle-bars { display: inline-flex; flex-direction: column; gap: 5px; width: 22px; }
+.nav__toggle-bars span { height: 2px; width: 100%; background: currentColor; }
+
+/* Estado con scroll: fondo marfil, tinta oscura, logo en marrón. */
+.site-header.is-scrolled {
+  background: var(--marfil);
+  box-shadow: 0 1px 0 rgba(75, 46, 32, 0.10), 0 10px 30px -22px rgba(32, 27, 23, 0.5);
+}
+.site-header.is-scrolled .brand__mark { color: var(--marron); }
+.site-header.is-scrolled .nav__list a { color: var(--tinta); }
+.site-header.is-scrolled .nav__toggle { color: var(--tinta); }
+
+/* ========================================================================
+   HERO
+   ======================================================================== */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  padding-block: calc(var(--header-h) + 32px) 88px;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero__photo {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  /* El eje vertical no es "center" por gusto. La foto es 16:9; en una pantalla
+     más ancha que eso —1900x860, por ejemplo— `cover` la agranda y recorta
+     ~85 px arriba y abajo. Recortando por el centro se come el cielo justo
+     donde va la navegación, y la tapa del bidón de 5 L trepa hasta detrás del
+     menú. Anclando el recorte cerca del borde superior ese cielo se conserva:
+     medido, la tapa pasa de 54 a 113 px, o sea por debajo del header de 82.
+     En pantallas de 16:9 o más altas no hay recorte vertical y este valor no
+     hace nada. Es "más cielo" sin tocar la fotografía. */
+  object-position: 70% 12%;
+  z-index: -2;   /* detras del velo del hero */
+}
+/* El velo se extiende más a la derecha que en la v5: la columna de texto
+   pasó de 38 a 46 rem para que el titular de 63 caracteres entre en tres
+   líneas, y con el degradado anterior las dos últimas caían sobre foto
+   clara. Medido sobre el punto más claro que toca el texto. */
+.hero__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(96deg, rgba(24, 17, 11, 0.88) 0%, rgba(24, 17, 11, 0.72) 38%, rgba(24, 17, 11, 0.32) 66%, rgba(24, 17, 11, 0) 88%),
+    linear-gradient(0deg, rgba(24, 17, 11, 0.42) 0%, rgba(24, 17, 11, 0) 38%);
+}
+.hero__inner { width: 100%; }
+.hero__text { max-width: 46rem; color: var(--marfil); }
+
+/* La marca sobre el titular. El h1 aprobado no nombra a Gaddi; el logotipo
+   acá le devuelve el protagonismo al hero sin tocar una palabra del copy. */
+.hero__brand { margin-bottom: clamp(20px, 2.4vw, 30px); }
+.hero__brand-mark {
+  width: clamp(122px, 12vw, 166px);
+  height: auto;
+  color: var(--marfil);
+  filter: drop-shadow(0 2px 22px rgba(18, 12, 7, 0.5));
+}
+
+.hero__title {
+  font-size: var(--h1);
+  color: var(--marfil);
+  line-height: 1.06;
+  letter-spacing: -0.022em;
+  text-shadow: 0 2px 30px rgba(18, 12, 7, 0.42);
+}
+.hero__lead {
+  font-size: var(--lead);
+  color: var(--marfil-2);
+  max-width: 40rem;
+  text-shadow: 0 1px 16px rgba(18, 12, 7, 0.5);
+}
+.hero__lead + .hero__lead { margin-top: 12px; }
+.hero__claim {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  color: var(--naranja-claro);
+  letter-spacing: -0.01em;
+  margin: 24px 0 30px;
+  text-shadow: 0 1px 16px rgba(18, 12, 7, 0.55);
+}
+.hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
+
+.hero__scroll {
+  position: absolute;
+  left: var(--margin-lateral);
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  gap: 10px;
+  font-size: var(--overline);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--marfil-2);
+}
+.hero__scroll span { animation: nudge 1.8s var(--ease) infinite; }
+@keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+
+/* ========================================================================
+   APERTURA — "Detrás de cada producto hay una historia que merece ser
+   contada". Primer momento de display; el segundo es el cierre.
+   ======================================================================== */
+.opening {
+  padding-block: var(--gap-lg) var(--gap-md-b);
+  background: var(--marfil);
+  /* `100vw` cuenta la barra de scroll, así que el sangrado se pasa ~8 px.
+     Recortar acá lo deja al ras del borde sin ensanchar el documento. */
+  overflow-x: clip;
+}
+.opening__head { margin-bottom: clamp(32px, 4vw, 56px); }
+.opening__head .section-title--display { max-width: 22ch; }
+.opening__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(0, 1fr);
+  gap: clamp(36px, 5vw, 76px);
+  align-items: start;
+}
+.opening__text p { max-width: 58ch; color: var(--cuerpo); }
+.opening__text p + p { margin-top: 14px; }
+.opening__text .lead-body {
+  font-size: var(--lead);
+  color: var(--marron);
+  font-weight: 500;
+}
+
+/* Sangra hasta el borde derecho del viewport, como en la referencia: el
+   margen negativo va en la figura y la imagen simplemente la llena. */
+.opening__media { margin-right: calc(-1 * var(--bleed-right)); }
+.opening__media img {
+  width: 100%;
+  max-width: none;
+  height: clamp(320px, 38vw, 520px);
+  object-fit: cover;
+  border-radius: var(--radio-xs);
+}
+
+/* ========================================================================
+   LA RELACIÓN ENTRE GADDI Y OLIVZÁN
+   ======================================================================== */
+.relation {
+  padding-block: var(--gap-md) 0;
+  background: var(--marfil);
+}
+.relation__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.85fr);
+  gap: clamp(32px, 4.5vw, 68px);
+  align-items: start;
+}
+.relation__text p { color: var(--cuerpo); max-width: 58ch; }
+.relation__text p + p { margin-top: 14px; }
+
+.relation__aside {
+  border-top: 2px solid var(--marron);
+  padding-top: 22px;
+}
+.relation__aside-title { font-size: var(--h3); font-weight: 600; margin-bottom: 18px; }
+.relation__aside-note {
+  font-size: var(--small);
+  color: var(--cuerpo);
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--arena-3);
+}
+
+/* Dos pasos, no una lista de viñetas: el copy dice "primero" y "después",
+   así que el orden ES la información. */
+.steps { display: grid; gap: 14px; counter-reset: paso; }
+.steps li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  font-size: var(--small);
+  color: var(--cuerpo);
+}
+.steps__n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px; height: 28px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--terracota);
+  color: var(--marfil);
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Lockup de respaldo ------------------------------------------------
+   Reemplaza a `.brand-switch` de la v4/v5, que era Olivzán → [flecha] →
+   Gaddi. Una flecha significa "se convierte en", y el copy dice lo
+   contrario cinco veces: Olivzán no se transforma, queda contenido. Acá
+   Olivzán va arriba, "una marca de" en el medio con filetes a los lados, y
+   Gaddi debajo. Es la estructura de un endorsement, no la de un relevo.
+   Sigue montado sobre el límite entre secciones, como la píldora del PNG. */
+.endorse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  margin: clamp(44px, 5vw, 68px) auto calc(-1 * var(--pill-overlap));
+  padding: clamp(20px, 2.4vw, 28px) clamp(34px, 4.5vw, 62px);
+  background: var(--marfil);
+  border: 1px solid var(--arena);
+  border-radius: var(--radio-md);
+  position: relative;
+  z-index: var(--z-realce);
+  box-shadow: 0 18px 44px -28px rgba(32, 27, 23, 0.55);
+}
+.endorse__olivzan {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.4vw, 2.05rem);
+  line-height: 1;
+  letter-spacing: -0.015em;
+  color: var(--oliva);
+}
+.endorse__nexo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: 0.68rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--marron);
+  opacity: 0.72;
+}
+.endorse__nexo::before,
+.endorse__nexo::after {
+  content: "";
+  width: clamp(20px, 3vw, 40px);
+  height: 1px;
+  background: var(--arena-2);
+}
+.endorse__gaddi { width: clamp(96px, 10vw, 128px); height: auto; color: var(--marron); }
+
+/* ========================================================================
+   MENSAJE DE TRANSICIÓN
+   ======================================================================== */
+.message {
+  padding-block: calc(var(--gap-md) + var(--pill-overlap)) var(--gap-md-b);
+  background: var(--marfil-2);
+}
+.message__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(32px, 4.5vw, 72px);
+  align-items: start;
+}
+.message__text p { color: var(--cuerpo); max-width: 56ch; }
+.message__text p + p { margin-top: 14px; }
+
+/* La marca paraguas, como nota al costado del mensaje. No es una sección
+   propia: el copy la trae aparte, pero dice lo mismo desde otro ángulo, y
+   dos secciones seguidas de prosa sobre "qué es Gaddi" es una de más. */
+.umbrella {
+  background: var(--arena-3);
+  border-left: 3px solid var(--terracota);
+  border-radius: 0 var(--radio-md) var(--radio-md) 0;
+  padding: clamp(24px, 2.8vw, 34px) clamp(22px, 2.6vw, 32px);
+}
+.umbrella__title { font-size: var(--h3); font-weight: 600; margin-bottom: 16px; }
+.umbrella p { font-size: var(--small); color: var(--cuerpo); }
+.umbrella p + p { margin-top: 12px; }
+.umbrella__close {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.35;
+  color: var(--marron);
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--arena-2);
+}
+
+/* ========================================================================
+   ORIGEN — campo azul noche + panorámica
+   ======================================================================== */
+.territory {
+  display: grid;
+  grid-template-columns: 0.92fr 1.08fr;
+  align-items: stretch;
+  background-color: var(--azul);
+}
+.territory__panel {
+  color: var(--marfil);
+  padding: clamp(52px, 6.4vw, 96px) clamp(36px, 4vw, 64px) clamp(52px, 6.4vw, 96px) var(--margin-lateral);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.territory__panel .section-title { margin-bottom: 22px; }
+.territory__text { color: var(--arena); margin-bottom: 14px; max-width: 52ch; font-size: var(--small); }
+
+.conditions {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin: 24px 0 22px;
+  border-top: 1px solid rgba(207, 196, 177, 0.32);
+}
+.conditions li {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: 0.98rem;
+  line-height: 1.25;
+  color: var(--marfil);
+  padding: 14px 10px 0 0;
+}
+.conditions li + li { border-left: 1px solid rgba(207, 196, 177, 0.32); padding-left: 14px; }
+
+.territory__claim {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.1rem, 1.5vw, 1.32rem);
+  line-height: 1.35;
+  color: var(--marfil);
+  max-width: 42ch;
+}
+
+.territory__media { position: relative; min-height: 440px; }
+.territory__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+
+/* ========================================================================
+   ARAUCO
+   ======================================================================== */
+.variety { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil); }
+/* Las proporciones se reequilibraron al ensanchar el container: con 0.8/1.2
+   sobre 1520 px la columna de texto medía 830 y su medida de lectura tope
+   500, así que quedaban 330 px de aire suelto contra el borde. La foto crece
+   y el texto se apoya en su columna. */
+.variety__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 5vw, 76px);
+  align-items: center;
+}
+.variety__media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radio-xs);
+}
+.variety__text .section-title { margin-bottom: 22px; }
+.variety__text > p { color: var(--cuerpo); max-width: 58ch; }
+.variety__text > p + p { margin-top: 14px; }
+
+/* ========================================================================
+   NUESTRA HISTORIA
+   ======================================================================== */
+.story { padding-block: var(--gap-md) var(--gap-md-b); background: var(--arena); }
+.story .overline { color: var(--terracota-osc); }
+.story__cols {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 3.5vw, 56px);
+}
+.story__cols p { color: var(--cuerpo); }
+.story__cols p + p { margin-top: 14px; }
+.story .pullquote { color: var(--terracota-osc); max-width: 26ch; }
+.story .signature { border-top-color: var(--arena-2); }
+
+/* ========================================================================
+   PRODUCTOS
+   ======================================================================== */
+.products {
+  padding-block: var(--gap-sm) var(--gap-sm-b);
+  background-color: var(--marfil-2);
+}
+.products .overline { color: var(--terracota-osc); }
+.products__lead { color: var(--cuerpo); margin-top: 14px; font-size: var(--small); }
+.products__lead + .products__lead { margin-top: 10px; }
+.products__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(32px, 4vw, 60px);
+}
+.product { display: flex; flex-direction: column; }
+/* Es un h3: cada <article> de producto necesita nombre accesible. El estilo
+   de etiqueta se mantiene, la semántica se corrige. */
+.product__kicker {
+  font-family: var(--font-text);
+  font-weight: 700;
+  font-size: var(--overline);
+  line-height: 1.5;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--marron);
+  padding-bottom: 14px;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--arena-2);
+}
+.product__kicker--olivzan { color: var(--terracota-osc); }
+.product__row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  gap: clamp(16px, 2vw, 26px);
+  align-items: center;
+  margin-bottom: 22px;
+}
+/* Sin tarjeta. Las fotos de producto vienen con fondo de estudio casi
+   blanco; en vez de encerrarlas en un rectángulo blanco —material ajeno a
+   una página hecha de campos de color y fotografía— se funden con el campo
+   por multiplicación. Desaparece la caja y quedan las botellas. */
+.product__media {
+  background: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 5 / 4;
+}
+.product__media img {
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.product__text { color: var(--cuerpo); font-size: var(--small); }
+.product__text + .product__text { margin-top: 12px; }
+.product__claim {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.02rem;
+  color: var(--terracota-osc);
+  margin-top: 14px;
+}
+
+/* La ficha va a todo el ancho del producto, no dentro de la columna de texto:
+   con 250 px no entra una tabla de formatos sin romperse. */
+.spec { margin-bottom: 16px; margin-top: auto; border-top: 1px solid var(--arena-2); }
+.spec > div { padding: 9px 0; border-bottom: 1px solid var(--arena-2); }
+.spec dt {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--marron-osc);
+  opacity: 0.72;
+  margin-bottom: 2px;
+}
+.spec dd { font-size: var(--small); color: var(--cuerpo); line-height: 1.45; }
+.spec .nums { font-variant-numeric: tabular-nums; }
+
+/* ========================================================================
+   EL PROCESO — campo marrón
+   ======================================================================== */
+.process {
+  background-color: var(--marron);
+  color: var(--marfil);
+  padding-block: var(--gap-lg) var(--gap-lg-b);
+}
+.process__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  gap: clamp(32px, 5vw, 76px);
+  align-items: center;
+}
+.process__media img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radio-xs); }
+.process__text .section-title { margin-bottom: 22px; }
+.process__text > p { color: var(--arena); margin-bottom: 14px; max-width: 56ch; font-size: var(--small); }
+
+/* Las tres frases del copy como medida horizontal. La repetición de
+   "importa" es el argumento; en un párrafo se pierde, en tres filas se ve. */
+.matters {
+  display: grid;
+  gap: 0;
+  margin: 26px 0 24px;
+  border-top: 1px solid rgba(207, 196, 177, 0.30);
+  max-width: 46ch;
+}
+.matters li {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.05rem, 1.5vw, 1.28rem);
+  line-height: 1.3;
+  color: var(--marfil);
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(207, 196, 177, 0.30);
+}
+
+/* ========================================================================
+   DEL PAISAJE AL PRODUCTO — grilla asimétrica de cuatro imágenes.
+   Reemplaza al mosaico denso de seis piezas a sangre que venía de la v4/v5.
+   Cuatro fotos con proporciones y alturas distintas sobre doce columnas, cada
+   una con su pie de función. El mosaico apilaba seis imágenes sin decir para
+   qué estaba ninguna; `CLAUDE.md` pide lo contrario ("cada imagen debe tener
+   función", "menos imágenes, mejor elegidas").
+   ======================================================================== */
+.landscape { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil); }
+.landscape__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(20px, 4vw, 72px);
+  align-items: end;
+  margin-bottom: clamp(40px, 5vw, 72px);
+}
+.landscape__lead { color: var(--cuerpo); max-width: 46ch; font-size: var(--small); }
+
+/* Marco de imagen sin CLS. La sombra apoya la foto sobre el papel, no le
+   dibuja un contorno: si al quitarla el elemento se lee como recuadro, es una
+   tarjeta, y este proyecto no las usa. */
+.frame {
+  position: relative;
+  overflow: hidden;
+  background: var(--arena-3);
+  border-radius: var(--radio-xs);
+  box-shadow: 0 2px 18px -12px rgba(32, 27, 23, 0.40);
+}
+.frame > img { width: 100%; height: 100%; object-fit: cover; }
+.frame--portrait { aspect-ratio: 4 / 5; }
+.frame--wide     { aspect-ratio: 3 / 2; }
+
+/* Pie de foto: dice qué función cumple la imagen. Es el único sistema de
+   etiquetas sobre imágenes de la página y no se repite sobre los títulos. */
+.figcap { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
+.figcap__fn {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--terracota);
+}
+.figcap__txt { font-size: var(--small); line-height: 1.5; color: var(--cuerpo); max-width: 42ch; }
+
+.landscape__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(16px, 2vw, 30px);
+  row-gap: clamp(44px, 6vw, 96px);
+}
+.landscape__grid > li:nth-child(1) { grid-column: 1 / 6; }
+.landscape__grid > li:nth-child(2) { grid-column: 7 / 13; align-self: end; }
+.landscape__grid > li:nth-child(3) { grid-column: 2 / 8; }
+.landscape__grid > li:nth-child(4) { grid-column: 9 / 13; margin-top: clamp(0px, 5vw, 88px); }
+
+/* El cierre de la sección va debajo de las fotos: el copy explica el paisaje
+   después de mostrarlo, no antes. Tres columnas para que no sea un muro. */
+.landscape__foot {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 44px);
+  margin-top: clamp(48px, 6vw, 88px);
+  padding-top: clamp(26px, 3vw, 40px);
+  border-top: 1px solid var(--arena);
+}
+.landscape__foot p { color: var(--cuerpo); font-size: var(--small); }
+
+/* ========================================================================
+   NUESTROS PRINCIPIOS — seis, en dos filas de tres
+   ======================================================================== */
+.principles { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil-2); }
+.principles__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(28px, 3.2vw, 46px) clamp(28px, 3.5vw, 52px);
+}
+.principle {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  padding-right: clamp(0px, 1.6vw, 22px);
+  border-top: 2px solid var(--marron);
+  transition: border-color 0.25s var(--ease);
+}
+.principle:hover { border-top-color: var(--terracota); }
+
+.principle__title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: var(--h3);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+.principle__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px; height: 50px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  color: var(--marfil);
+}
+.principle__icon svg { width: 25px; height: 25px; }
+.principle__icon--oliva     { background: var(--oliva); }
+.principle__icon--terracota { background: var(--terracota); }
+.principle__icon--azul      { background: var(--azul); }
+.principle__text { color: var(--cuerpo); font-size: var(--small); }
+
+/* ========================================================================
+   COMERCIOS Y DISTRIBUIDORES — argumento + red real de distribución
+   ======================================================================== */
+.trade { padding-block: var(--gap-sm) var(--gap-sm-b); background: var(--marfil); }
+.trade__intro p { color: var(--cuerpo); font-size: var(--small); }
+.trade__intro p + p { margin-top: 12px; }
+.trade__intro .claim { margin-top: 16px; margin-bottom: 16px; }
+
+.trade__network-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(16px, 3vw, 44px);
+  align-items: baseline;
+  padding-bottom: 18px;
+  margin-bottom: clamp(20px, 2.4vw, 32px);
+  border-bottom: 2px solid var(--marron);
+}
+.trade__network-title { font-size: var(--h3); font-weight: 600; }
+.trade__network-head p { color: var(--cuerpo); font-size: var(--small); }
+
+.network { display: grid; gap: clamp(26px, 2.8vw, 40px); }
+.region__name {
+  font-family: var(--font-text);
+  font-size: var(--overline);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--terracota);
+  padding-bottom: 10px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid var(--arena);
+}
+.dist {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: 8px clamp(16px, 2.5vw, 40px);
+  align-items: baseline;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--arena-3);
+}
+.dist__zone { font-family: var(--font-display); font-size: 1.06rem; font-weight: 600; color: var(--marron); line-height: 1.25; }
+.dist__who  { font-size: var(--small); color: var(--cuerpo); }
+.dist__where { font-size: var(--small); color: var(--cuerpo); line-height: 1.5; font-variant-numeric: tabular-nums; }
+/* Teléfonos y correos: son los enlaces que más se tocan de la página y los
+   que peor estaban (28 px de alto, 2 px de separación). 44 px y 8 px. */
+.dist__contact { display: flex; flex-direction: column; gap: 8px; font-size: var(--small); font-variant-numeric: tabular-nums; }
+.dist__contact a {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  min-height: 44px;
+  color: var(--oliva-osc);
+  font-weight: 500;
+  text-decoration: underline;
+  text-decoration-color: var(--arena-2);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.dist__contact a:hover { color: var(--terracota); text-decoration-color: currentColor; }
+
+.trade__cta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px clamp(20px, 2.6vw, 36px);
+  margin-top: clamp(28px, 3vw, 42px);
+  padding-top: clamp(24px, 2.6vw, 36px);
+  border-top: 1px solid var(--arena);
+}
+.trade__cta-text { color: var(--cuerpo); font-size: var(--small); max-width: 46ch; flex: 1 1 320px; }
+.trade__pending { font-size: var(--small); color: var(--cuerpo); flex-basis: 100%; }
+
+/* ========================================================================
+   PREGUNTAS FRECUENTES
+   Sin acordeón: en una página cuyo trabajo es explicar una transición,
+   esconder las respuestas detrás de un clic es esconder el mensaje.
+   ======================================================================== */
+.faq { padding-block: var(--gap-sm) var(--gap-sm-b); background: var(--arena-3); }
+.faq__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(24px, 2.8vw, 40px) clamp(32px, 4vw, 64px);
+}
+.faq__item { border-top: 1px solid var(--arena-2); padding-top: 18px; }
+.faq__q { font-size: 1.08rem; font-weight: 600; line-height: 1.25; margin-bottom: 10px; }
+.faq__a { font-size: var(--small); color: var(--cuerpo); }
+.faq__a b { color: var(--terracota-osc); font-weight: 700; }
+
+/* ========================================================================
+   CONTACTO — campo oliva, tres columnas
+   ======================================================================== */
+.contact {
+  padding-block: var(--gap-md) var(--gap-md-b);
+  background-color: var(--oliva);
+  color: var(--marfil);
+}
+.contact__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.28fr) minmax(0, 0.72fr);
+  gap: clamp(32px, 3.4vw, 52px);
+  align-items: start;
+}
+/* Sobre oliva, el arena da 3,07:1 y el marfil-2 4,26:1: para texto chico
+   todo lo que no sea marfil pleno queda corto. La jerarquía la hacen el
+   tamaño y el tracking, no el color. */
+.contact__text { color: var(--marfil); font-size: var(--small); margin-top: 18px; max-width: 38ch; }
+
+.contact__form { display: flex; flex-direction: column; gap: 16px; }
+.form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+
+.form-pending {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--marfil);
+  background: rgba(32, 27, 23, 0.22);
+  border-left: 3px solid var(--naranja);
+  padding: 12px 16px;
+  border-radius: var(--radio);
+}
+/* Enlace en línea dentro de una frase: WCAG 2.2 (2.5.8) lo exime del mínimo
+   de 44 px justamente porque el line-height lo restringe. El padding amplía
+   el área sin partir el párrafo. */
+.form-pending a {
+  padding-block: 7px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 700;
+}
+
+.field { display: flex; flex-direction: column; gap: 7px; }
+.field label {
+  font-size: var(--overline);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--marfil);
+}
+.req { color: var(--marfil); }
+.field input, .field textarea, .field select {
+  width: 100%;
+  background: rgba(244, 240, 231, 0.09);
+  border: 1px solid rgba(244, 240, 231, 0.40);
+  border-radius: var(--radio);
+  padding: 13px 15px;
+  min-height: 48px;
+  color: var(--marfil);
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+}
+/* El select conserva su afordancia: sin la flecha no se lee como desplegable. */
+.field select {
+  appearance: none;
+  padding-right: 42px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8' fill='none' stroke='%23CFC4B1' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m1 1.6 5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 12px 8px;
+}
+.field select option { color: var(--tinta); background: var(--marfil); }
+.field textarea { resize: vertical; min-height: 118px; }
+.field input:hover, .field textarea:hover, .field select:hover { border-color: rgba(244, 240, 231, 0.62); }
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: none;
+  border-color: var(--marfil);
+  background: rgba(244, 240, 231, 0.15);
+}
+.field input:focus-visible, .field textarea:focus-visible, .field select:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 2px;
+}
+.field__hint { font-size: 0.78rem; color: var(--marfil); opacity: 0.86; }
+
+/* El error nunca depende sólo del color: borde + fondo + signo + mensaje. */
+.field.has-error input, .field.has-error textarea {
+  border-color: #F0B48A;
+  background: rgba(240, 120, 60, 0.14);
+}
+.field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #F6D9C2;
+}
+.field__error::before { content: "!"; font-weight: 700; color: var(--naranja); }
+
+.form-note { font-size: 0.78rem; color: var(--marfil); opacity: 0.86; }
+.form-status {
+  border-radius: var(--radio);
+  padding: 13px 16px;
+  font-size: var(--small);
+  font-weight: 500;
+  line-height: 1.45;
+}
+.form-status.is-pending { background: rgba(244, 240, 231, 0.16); border: 1px solid rgba(244, 240, 231, 0.45); }
+.form-status.is-error   { background: rgba(151, 62, 22, 0.34); border: 1px solid #C97A4E; color: #F6DCC9; }
+
+.contact__details { display: grid; gap: 20px; }
+.contact__details dt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: var(--overline);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--marfil);
+  margin-bottom: 6px;
+}
+.contact__details dt svg { width: 17px; height: 17px; flex-shrink: 0; }
+.contact__details dd { font-size: var(--small); line-height: 1.55; color: var(--marfil); }
+
+/* ========================================================================
+   CIERRE — el segundo momento de display, con la marca.
+   Estaba centrado: sobre una pantalla ancha eso deja el bloque flotando en
+   el medio con 400 px muertos a cada lado, y ninguna otra sección de la
+   página centra nada. Ahora es una grilla de dos columnas alineada a la
+   izquierda como el resto: marca y titular a un lado, remate y acción al
+   otro. Va antes de Contacto — ver el comentario en el HTML.
+   ======================================================================== */
+.closing {
+  padding-block: var(--gap-md) var(--gap-lg-b);
+  background: var(--marfil);
+  border-top: 1px solid var(--arena);
+}
+.closing__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: start;
+}
+.closing__mark { width: clamp(108px, 10vw, 148px); height: auto; color: var(--marron); margin-bottom: clamp(22px, 2.6vw, 34px); }
+.closing__head .section-title--display { max-width: 15ch; }
+.closing__body { display: flex; flex-direction: column; align-items: flex-start; }
+.closing__text p { color: var(--cuerpo); max-width: 54ch; }
+.closing__text p + p { margin-top: 14px; }
+.closing__claim {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(1.25rem, 1.9vw, 1.65rem);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  color: var(--terracota);
+  margin: clamp(26px, 3vw, 38px) 0 clamp(22px, 2.4vw, 30px);
+  padding-top: clamp(22px, 2.4vw, 30px);
+  border-top: 2px solid var(--arena);
+  width: 100%;
+}
+
+/* ========================================================================
+   CONTENEDORES ESTRUCTURALES
+   Existen para la grilla o para dar nombre accesible a su bloque. Se
+   declaran igual: una clase en el HTML sin regla en la hoja es una clase
+   que nadie sabe si sobra. `min-width: 0` no es decorativo — un ítem de
+   grilla trae `min-width: auto` por defecto y una palabra larga (un correo,
+   "Gualeguaychú") lo empuja más allá de su columna.
+   ======================================================================== */
+.story__inner { max-width: 94ch; }
+.product__body { display: flex; flex-direction: column; min-width: 0; }
+.contact__data,
+.relation__text, .relation__aside,
+.message__text, .trade__intro { min-width: 0; }
+.trade__network { margin-top: clamp(28px, 3vw, 44px); }
+.region + .region { margin-top: 0; }   /* el hueco lo pone el gap de .network */
+.region__list { display: grid; }
+.dist__id { min-width: 0; }
+.site-footer__brand-block { display: flex; flex-direction: column; align-items: flex-start; }
+
+/* ========================================================================
+   FOOTER
+   ======================================================================== */
+.site-footer {
+  background-color: var(--tinta);
+  color: var(--arena);
+  padding-block: clamp(36px, 4vw, 56px);
+}
+.site-footer__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr) auto;
+  align-items: start;
+  gap: 24px clamp(20px, 2.6vw, 40px);
+}
+.site-footer__brand { display: inline-flex; align-items: center; min-height: 44px; }
+.site-footer__mark { width: 112px; height: auto; color: var(--marfil); }
+.site-footer__desc { font-size: 0.84rem; color: var(--arena); margin-top: 6px; max-width: 30ch; }
+.site-footer__claim {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--marfil);
+  margin-top: 10px;
+}
+.site-footer__nav { display: flex; flex-wrap: wrap; gap: 4px clamp(12px, 1.5vw, 20px); }
+.site-footer__nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: 0.84rem;
+  color: var(--arena);
+  transition: color 0.2s var(--ease);
+}
+.site-footer__nav a:hover { color: var(--marfil); }
+
+/* Pie: bloque legal con los enlaces obligatorios debajo del copyright. */
+.site-footer__legal { display: grid; gap: 6px; justify-items: end; text-align: right; }
+.site-footer__legal p { font-size: 0.8rem; color: var(--arena-2); }
+.site-footer__social { color: var(--arena); }
+.site-footer__legal-links { display: flex; flex-wrap: wrap; gap: 4px 18px; justify-content: flex-end; }
+.site-footer__legal-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--arena);
+  text-decoration: underline;
+  text-decoration-color: rgba(207, 196, 177, 0.4);
+  text-underline-offset: 3px;
+  transition: color 0.2s var(--ease);
+}
+.site-footer__legal-links a:hover { color: var(--marfil); text-decoration-color: currentColor; }
+
+/* ========================================================================
+   REVELADOS — scroll-driven en CSS.
+   El contenido está visible siempre: la animación no decide la visibilidad.
+   ======================================================================== */
+@supports (animation-timeline: view()) {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    /* `screen` a propósito: al imprimir no hay scroll, así que una animación
+       de entrada dejaría media página en blanco. */
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 8% cover 22%;
+    }
+    /* Cada figura de la grilla de paisaje tiene su propia línea de tiempo, así
+       que el escalonado sale de su posición real en la grilla y no de un
+       delay fijo: entra cuando le toca entrar. Con animation-timeline el
+       animation-delay no sirve —no hay reloj, hay scroll—; el rango se corre. */
+    .landscape__grid > li { animation-range: entry 5% cover 22%; }
+    @keyframes reveal-in {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: none; }
+    }
+  }
+}
+
+/* ========================================================================
+   RESPONSIVE
+   ======================================================================== */
+
+/* ---- Navegación en panel a ≤ 960px ---- */
+@media (max-width: 960px) {
+  .nav__cta { display: none; }
+  .nav__toggle { display: inline-flex; }
+  .nav__panel {
+    position: fixed;
+    inset: 0 0 0 auto;
+    width: min(88vw, 380px);
+    z-index: var(--z-base);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 6px;
+    background: var(--marfil);
+    padding: 96px var(--margin-lateral) 48px;
+    transform: translateX(100%);
+    transition: transform 0.35s var(--ease);
+    box-shadow: -30px 0 60px -30px rgba(32, 27, 23, 0.6);
+    overflow-y: auto;
+  }
+  .site-header--nav-open .nav__panel { transform: translateX(0); }
+  .site-header--nav-open .nav__toggle { color: var(--tinta); }
+  .nav__list { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .nav__list a {
+    color: var(--tinta) !important;
+    font-family: var(--font-display);
+    font-size: 1.28rem;
+    font-weight: 500;
+    padding-block: 11px;
+  }
+  .nav__list a::after { display: none; }
+  .nav__cta-mobile { display: inline-flex; margin-top: 26px; }
+  .site-header--nav-open::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background: rgba(24, 17, 11, 0.5);
+    z-index: -1;
+  }
+  .site-header--nav-open { background: transparent; }
+}
+
+/* ---- Tablet ≤ 1024px ---- */
+@media (max-width: 1024px) {
+  .opening__inner { grid-template-columns: 1fr; gap: 36px; }
+  .opening__media img { height: clamp(280px, 46vw, 440px); }
+
+  .relation__inner { grid-template-columns: 1fr; gap: 32px; }
+  .message__inner  { grid-template-columns: 1fr; gap: 32px; }
+
+  .territory { grid-template-columns: 1fr; }
+  .territory__panel { order: 2; padding: clamp(44px, 6.5vw, 68px) var(--margin-lateral); }
+  .territory__media { order: 1; min-height: 300px; height: 44vw; max-height: 420px; }
+
+  .variety__inner { grid-template-columns: 1fr; gap: 32px; }
+  .variety__media img { aspect-ratio: 16 / 10; }
+
+  .process__inner { grid-template-columns: 1fr; gap: 32px; }
+  .process__media img { aspect-ratio: 16 / 10; }
+
+  .products__grid { grid-template-columns: 1fr; gap: 44px; }
+  .product__row { grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); }
+  .spec { margin-top: 0; }
+
+  .principles__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .landscape__head { grid-template-columns: 1fr; align-items: start; gap: 18px; }
+  .landscape__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: clamp(40px, 6vw, 64px); }
+  .landscape__grid > li { grid-column: auto; align-self: auto; margin-top: 0; }
+  /* La asimetría no se apaga en tablet: la columna derecha baja medio paso.
+     Sin esto la sección se vuelve la grilla de cuatro iguales que evita. */
+  .landscape__grid > li:nth-child(even) { margin-top: clamp(24px, 5vw, 56px); }
+  .landscape__foot { grid-template-columns: 1fr; gap: 14px; }
+
+  .closing__inner { grid-template-columns: 1fr; gap: 28px; }
+
+  .contact__inner { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .contact__intro { grid-column: 1 / -1; }
+
+  .section-head--split { grid-template-columns: 1fr; gap: 18px; }
+  .trade__network-head { grid-template-columns: 1fr; gap: 8px; }
+
+  .site-footer__inner { grid-template-columns: 1fr 1fr; }
+  .site-footer__legal { grid-column: 1 / -1; justify-items: start; text-align: left; }
+  .site-footer__legal-links { justify-content: flex-start; }
+}
+
+/* ---- Columnas a una ≤ 860px ---- */
+@media (max-width: 860px) {
+  .principles__list { grid-template-columns: 1fr; gap: 0; }
+  .principle { padding-right: 0; padding-block: 24px 0; border-top: 1px solid var(--arena-2); }
+  .principle:first-child { border-top: 2px solid var(--marron); }
+  .principle__text { max-width: 58ch; padding-bottom: 24px; }
+
+  .story__cols { grid-template-columns: 1fr; }
+  .story__cols div + div { margin-top: 14px; }
+  .faq__grid { grid-template-columns: 1fr; }
+}
+
+/* ---- Mobile ≤ 720px: recomponer, no encoger ---- */
+@media (max-width: 720px) {
+  /* El cuerpo secundario sube de 14,4 a 15,2 px: a 390 px, 14,4 es incómodo
+     para leer párrafos largos. Los inputs quedan en 16 px, que es lo que
+     evita el auto-zoom de iOS. */
+  :root { --header-h: 70px; --small: 0.95rem; }
+
+  .hero { min-height: 92svh; padding-top: calc(var(--header-h) + 20px); }
+  /* En vertical la foto se recorta al 37 % de su ancho: encuadre sobre el
+     grupo de botellas, no sobre una sola. */
+  .hero__photo { object-position: 60% center; }
+  /* Y el velo sube: con 0.48 en la banda media las etiquetas de las botellas
+     se leían por detrás del texto. */
+  .hero__overlay {
+    background: linear-gradient(180deg, rgba(22, 15, 9, 0.76) 0%, rgba(22, 15, 9, 0.70) 45%, rgba(22, 15, 9, 0.90) 100%);
+  }
+  .hero__text { max-width: 100%; }
+  .hero__actions { flex-direction: column; align-items: stretch; gap: 14px; }
+  .hero__actions .btn--ghost { align-self: flex-start; }
+  .hero__scroll { display: none; }
+
+  .endorse { gap: 8px; padding: 18px 26px; width: min(100%, 340px); }
+  .endorse__nexo::before, .endorse__nexo::after { width: 16px; }
+
+  .conditions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .conditions li:nth-child(3) { border-left: 0; padding-left: 0; }
+  .conditions li:nth-child(n+3) { border-top: 1px solid rgba(207, 196, 177, 0.32); margin-top: 4px; }
+
+  .landscape__grid { grid-template-columns: 1fr; row-gap: 36px; }
+  .landscape__grid > li:nth-child(even) { margin-top: 0; }
+
+  .product__row { grid-template-columns: 1fr; gap: 20px; }
+  .product__media { aspect-ratio: 16 / 9; }
+
+  .dist { grid-template-columns: 1fr; gap: 4px; padding: 18px 0; }
+  .dist__contact { flex-direction: row; flex-wrap: wrap; gap: 4px 18px; margin-top: 4px; }
+
+  .contact__inner { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .btn--on-oliva { align-self: stretch; }
+
+  .closing .btn { align-self: stretch; }
+
+  .site-footer__inner { grid-template-columns: 1fr; justify-items: start; gap: 20px; }
+}
+
+/* ---- Pantallas muy anchas: el hero no se estira sin límite ---- */
+@media (min-width: 1600px) {
+  .hero { min-height: 840px; }
+}
+
+/* ========================================================================
+   ALTO CONTRASTE (Windows) — el sistema pisa la paleta. Lo que hay que
+   garantizar no es el color sino que los bordes y las superficies existan.
+   ======================================================================== */
+@media (forced-colors: active) {
+  .field input, .field textarea, .field select,
+  .form-status, .form-pending, .endorse, .umbrella { border: 1px solid CanvasText; }
+  .btn { border: 1px solid ButtonText; }
+  /* Los círculos de los principios se definen sólo por fondo de color. */
+  .principle__icon { forced-color-adjust: none; }
+  :focus-visible { outline-color: Highlight; }
+}
+
+/* ========================================================================
+   MOVIMIENTO REDUCIDO
+   ======================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+  .hero__scroll span { animation: none; }
+}
+
+/* ========================================================================
+   PÁGINAS LEGALES
+   Existen para que los enlaces del pie lleven a algún lado: un legal que
+   apunta a "#" es un enlace muerto, y no tenerlo es una omisión. El texto
+   está sin redactar y la página lo dice en la cara.
+   ======================================================================== */
+.legal { padding-block: calc(var(--gap-md) + 20px) var(--gap-md-b); background: var(--marfil); }
+.legal__inner { max-width: 68ch; }
+.legal__back { margin-bottom: 28px; }
+.legal__back .arrow { transition: transform 0.25s var(--ease); }
+.legal__back:hover .arrow { transform: translateX(-4px); }
+.legal .section-title { margin-bottom: 28px; }
+.legal p { color: var(--cuerpo); margin-bottom: 16px; }
+.legal a:not(.link-arrow) {
+  color: var(--terracota);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal a:not(.link-arrow):hover { color: var(--marron); }
+.legal__aviso {
+  background: rgba(151, 62, 22, 0.09);
+  border-left: 3px solid var(--terracota);
+  border-radius: var(--radio);
+  padding: 16px 20px;
+  margin-bottom: 28px;
+  font-size: var(--small);
+  color: var(--cuerpo);
+}
+.legal__firma {
+  margin-top: 36px;
+  padding-top: 16px;
+  border-top: 1px solid var(--arena);
+  font-family: var(--font-display);
+  color: var(--marron);
+}
