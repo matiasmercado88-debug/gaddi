@@ -49,15 +49,37 @@
      subir a 70 px y la columna del hero se angosta de 46 a 40 rem: dos líneas
      y un titular que pesa lo que tiene que pesar. El display se mantiene en
      74 px — el de la presentación sigue teniendo 70 caracteres. */
-  --display:  clamp(2.3rem, 5.1vw, 4.6rem);   /*  74px a 1440 */
-  --h1:       clamp(2.5rem, 4.9vw, 4.4rem);   /*  70px */
+  /* Un solo escalón para la voz más grande de la página.
+     Eran dos tokens a 73 y 70 px: 4 % de diferencia, o sea el mismo tamaño con
+     dos nombres. Un paso de escala que no se percibe no es un paso, es deuda.
+     El h1 del hero y los dos momentos de display comparten volumen; lo que los
+     distingue es el contexto —fotografía contra papel— y el tratamiento: el
+     hero abre la interlínea a 1,06 y afloja el tracking porque vive sobre una
+     imagen, donde el texto necesita más aire para separarse del fondo. */
+  --display:  clamp(2.5rem, 5.05vw, 4.55rem);   /* 73px a 1440 */
   --h2:       clamp(1.65rem, 2.7vw, 2.4rem);  /*  38px */
   --h2-sm:    clamp(1.45rem, 2.2vw, 2rem);    /*  32px, secciones utilitarias */
   --h3:       clamp(1.2rem, 1.7vw, 1.5rem);   /*  24px */
   --lead:     clamp(1.02rem, 1.3vw, 1.2rem);
   --body:     1rem;
-  --small:    0.9rem;
+  /* 15,2 px, no 14,4. Medido sobre la página construida: `--small` carga el
+     55 % de las palabras visibles y `--body` sólo el 15 %, así que en los
+     hechos éste ES el cuerpo de lectura, no un escalón secundario. El propio
+     archivo ya traía el argumento para mobile —"a 390 px, 14,4 es incómodo
+     para leer párrafos largos"— y la medida de esos párrafos en caracteres es
+     la misma a 1440. Vale el mismo valor en todos los anchos. */
+  --small:    0.95rem;
   --overline: 0.75rem;
+  /* Tres escalones que existían como valores sueltos repartidos por la hoja.
+     Entre `--overline` y `--body` convivían ocho tamaños literales distintos
+     —0,68 · 0,7 · 0,72 · 0,8 · 0,84 · 0,9 · 0,95 · 0,98— para cinco roles: una
+     escala sombra que esquivaba los tokens y que, a menos de medio píxel de
+     diferencia entre pasos, no distingue nada. Quedan tres, y cada uno nombra
+     un rol, no un valor. El corrimiento máximo al unificarlos es de 0,6 px. */
+  --micro:       0.72rem;  /* versalita de etiqueta: función de foto, clave de ficha, nexo del lockup */
+  --nota:        0.84rem;  /* metadato en prosa: avisos, error de campo, pie */
+  --titulo-fila: 1.08rem;  /* Petrona corta dentro de una fila: provincia, pregunta, firma */
+  --action:      0.9rem;   /* texto de todo botón y enlace con flecha */
 
   /* Layout.
      El container sube de 1280 a 1520 y el margen lateral baja de 84 a 68 px.
@@ -96,7 +118,6 @@
   --radio-xs:   2px;   /* fotos y laminas */
   --radio:      4px;   /* botones, campos */
   --radio-md:   8px;   /* laminas de contenido: lockup, aside, ficha de FAQ */
-  --radio-pill: 999px;
 
   /* Escala de z-index semantica en vez de 1 / 3 / 100 / 1000 sueltos. */
   --z-fondo:   -1;
@@ -288,7 +309,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .signature {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 1.1rem;
+  font-size: var(--titulo-fila);
   color: var(--marron);
   letter-spacing: 0.02em;
   border-top: 1px solid var(--arena);
@@ -335,6 +356,22 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .products, .story, .faq     { --focus: var(--terracota-osc); }  /* 5,2:1 */
 .contact, .site-footer      { --focus: var(--marfil); }         /* 4,7:1 · 14,2:1 */
 
+/* Compensación de texto claro sobre campo oscuro.
+   El mismo texto en negativo se percibe más liviano y más apretado: los trazos
+   claros sangran ópticamente sobre el fondo y comen el blanco entre letras y
+   entre líneas. La corrección va por dos ejes —interlínea y prosa— y nunca por
+   tamaño, que rompería la escala. Sólo sobre los cuatro campos oscuros:
+   azul en Origen, marrón en El proceso, oliva en Contacto y tinta en el pie. */
+.territory__text,
+.process__text > p,
+.contact__text,
+.site-footer__desc,
+.field__hint,
+.form-note {
+  line-height: 1.72;
+  letter-spacing: 0.01em;
+}
+
 /* -------------------------------- Botones -------------------------------- */
 .btn {
   display: inline-flex;
@@ -343,7 +380,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   gap: 0.6em;
   font-family: var(--font-text);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: var(--action);
   line-height: 1;
   padding: 15px 26px;
   border-radius: var(--radio);
@@ -470,6 +507,35 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .nav__toggle-bars { display: inline-flex; flex-direction: column; gap: 5px; width: 22px; }
 .nav__toggle-bars span { height: 2px; width: 100%; background: currentColor; }
 
+/* Scrim propio del header mientras está sobre el hero.
+   El velo del hero se apaga al 88 % del ancho, y la fila de enlaces vive justo
+   ahí. Medido sobre el píxel realmente renderizado detrás de cada enlace, con
+   el texto ocultado para capturar el fondo: a 1920 "Productos" daba 2,34:1 y
+   "Origen" 3,16:1, contra 4,5:1 que pide WCAG 1.4.3. Oscurecer más
+   `.hero__overlay` habría arruinado la fotografía —que es el argumento de la
+   sección—, así que el oscurecimiento va acá, acotado a la banda del header.
+   Con 0,50 de alfa el peor caso pasa de 2,34 a 5,99:1.
+   Sólo a partir de 961 px: por debajo la fila de enlaces no existe, y lo que
+   queda —logotipo y botón "Menú"— ya mide 9,96:1 y 10,49:1 contra el velo.
+   `z-index: -1` lo pone sobre el fondo del header y bajo su contenido; por eso
+   al llegar `.is-scrolled`, que pinta marfil, hay que apagarlo explícitamente. */
+@media (min-width: 961px) {
+  .site-header::after {
+    content: "";
+    position: absolute;
+    inset: 0 0 -38px 0;
+    z-index: -1;
+    pointer-events: none;   /* la cola de 38 px no debe comerse clics del hero */
+    background: linear-gradient(180deg,
+      rgba(24, 17, 11, 0.58) 0%,
+      rgba(24, 17, 11, 0.50) 55%,
+      rgba(24, 17, 11, 0.22) 82%,
+      rgba(24, 17, 11, 0) 100%);
+    transition: opacity 0.3s var(--ease);
+  }
+  .site-header.is-scrolled::after { opacity: 0; }
+}
+
 /* Estado con scroll: fondo marfil, tinta oscura, logo en marrón. */
 .site-header.is-scrolled {
   background: var(--marfil);
@@ -523,8 +589,11 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .hero__text { max-width: 40rem; color: var(--marfil); }
 
 .hero__title {
-  font-size: var(--h1);
+  font-size: var(--display);
   color: var(--marfil);
+  /* Mismo tamaño que los display de la página, distinto tratamiento: sobre
+     fotografía el texto necesita más aire entre líneas y menos tracking
+     negativo para despegarse del fondo. */
   line-height: 1.06;
   letter-spacing: -0.022em;
   text-shadow: 0 2px 30px rgba(18, 12, 7, 0.42);
@@ -546,6 +615,42 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   text-shadow: 0 1px 16px rgba(18, 12, 7, 0.55);
 }
 .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 26px; }
+
+/* ------------------------- Apertura del hero -------------------------
+   El único momento de carga de toda la página, y es deliberado que sea uno
+   solo: la marca abre una vez y después se calla.
+
+   Cuatro elementos entran escalonados de a 70 ms en el orden en que se leen
+   —titular, filete, bajada, claim, acciones—, con `ease-out-expo`, que frena
+   fuerte al final y por eso se percibe decidido en vez de lento. Sin rebote:
+   una marca que dice ser honesta y trabajadora no rebota.
+
+   Es una animación por tiempo, no por scroll: arranca y termina sola en menos
+   de un segundo, así que no comparte el problema del revelado —ahí el estado
+   inicial se quedaba puesto mientras nadie scrolleara—. Aun así el desfase
+   máximo es 0,28 s: cualquier captura que espere la carga ve el estado final.
+
+   No se toca la fotografía. El encuadre del hero está calibrado al píxel
+   (`object-position: 70% 12%`) para que el cielo quede libre bajo el menú;
+   una escala de entrada movería ese recorte justo donde más cuesta. */
+@media (prefers-reduced-motion: no-preference) {
+  .hero__title,
+  .hero__text .rule,
+  .hero__lead,
+  .hero__claim,
+  .hero__actions {
+    animation: hero-entra 0.72s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .hero__text .rule { animation-delay: 0.07s; }
+  .hero__lead      { animation-delay: 0.14s; }
+  .hero__claim     { animation-delay: 0.21s; }
+  .hero__actions   { animation-delay: 0.28s; }
+
+  @keyframes hero-entra {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: none; }
+  }
+}
 
 .hero__scroll {
   position: absolute;
@@ -627,11 +732,16 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   margin: clamp(44px, 5vw, 68px) auto calc(-1 * var(--pill-overlap));
   padding: clamp(20px, 2.4vw, 28px) clamp(34px, 4.5vw, 62px);
   background: var(--marfil);
-  border: 1px solid var(--arena);
+  /* Sin filete. Tenía borde de 1px Y sombra de 44px de difuminado a la vez, que
+     es exactamente la firma de tarjeta genérica —y que contradice la regla del
+     propio sistema: la sombra separa una superficie de su fondo, no le dibuja
+     un contorno alrededor. Con la sombra sola el lockup se apoya sobre la
+     costura; con las dos cosas, se recorta como una caja pegada encima.
+     La sombra sube un punto para compensar el borde que se fue. */
   border-radius: var(--radio-md);
   position: relative;
   z-index: var(--z-realce);
-  box-shadow: 0 18px 44px -28px rgba(32, 27, 23, 0.55);
+  box-shadow: 0 20px 48px -26px rgba(32, 27, 23, 0.62);
 }
 .endorse__olivzan {
   font-family: var(--font-display);
@@ -647,7 +757,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   gap: 12px;
   font-family: var(--font-text);
   font-weight: 700;
-  font-size: 0.68rem;
+  font-size: var(--micro);
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--marron);
@@ -696,7 +806,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .conditions li {
   font-family: var(--font-display);
   font-weight: 500;
-  font-size: 0.98rem;
+  font-size: var(--body);
   line-height: 1.25;
   color: var(--marfil);
   padding: 14px 10px 0 0;
@@ -704,31 +814,32 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .conditions li + li { border-left: 1px solid rgba(207, 196, 177, 0.32); padding-left: 14px; }
 
 
-.territory__media { position: relative; min-height: 440px; }
+/* `overflow: clip` sostiene el paralaje: la foto se anima escalada al 1.08 y sin
+   recorte se derramaría sobre el campo azul de al lado. `clip` y no `hidden`
+   porque no crea contexto de scroll. */
+.territory__media { position: relative; min-height: 440px; overflow: clip; }
 .territory__media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 
 /* ========================================================================
    ARAUCO
    ======================================================================== */
-.variety { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil-2); }
-/* Las proporciones se reequilibraron al ensanchar el container: con 0.8/1.2
-   sobre 1520 px la columna de texto medía 830 y su medida de lectura tope
-   500, así que quedaban 330 px de aire suelto contra el borde. La foto crece
-   y el texto se apoya en su columna. */
+/* La única sección puramente tipográfica de la página, y por eso la que más
+   aire pide: intervalo largo arriba y abajo en vez del medio que traía. El
+   espacio es lo que convierte "esta sección no tiene foto" en "esta sección
+   es una pausa". */
+.variety { padding-block: var(--gap-lg) var(--gap-lg-b); background: var(--marfil-2); }
+/* Titular a la izquierda, prosa a la derecha. Sin imagen, la proporción se
+   invierte respecto de las secciones con foto: manda el texto, no la columna
+   que sobró. `align-items: start` y no `center` — con dos bloques de texto de
+   alturas distintas, centrar deja el titular flotando a media altura. */
 .variety__inner {
   display: grid;
-  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
-  gap: clamp(32px, 5vw, 76px);
-  align-items: center;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
 }
-.variety__media img {
-  width: 100%;
-  aspect-ratio: 4 / 5;
-  object-fit: cover;
-  border-radius: var(--radio-xs);
-}
-.variety__text .section-title { margin-bottom: 22px; }
-.variety__text > p { color: var(--cuerpo); max-width: 58ch; }
+.variety__lead .section-title { max-width: 14ch; }
+.variety__text > p { color: var(--cuerpo); max-width: 56ch; }
 .variety__text > p + p { margin-top: 14px; }
 
 /* ========================================================================
@@ -837,7 +948,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .spec { margin-bottom: 16px; margin-top: auto; border-top: 1px solid var(--arena-2); }
 .spec > div { padding: 9px 0; border-bottom: 1px solid var(--arena-2); }
 .spec dt {
-  font-size: 0.7rem;
+  font-size: var(--micro);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -904,14 +1015,21 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   box-shadow: 0 2px 18px -12px rgba(32, 27, 23, 0.40);
 }
 .frame > img { width: 100%; height: 100%; object-fit: cover; }
-.frame--portrait { aspect-ratio: 4 / 5; }
-.frame--wide     { aspect-ratio: 3 / 2; }
+/* Cuadrado y no 4/5. Las cuatro fotos de El paisaje son 1,50 (3:2 de cámara);
+   forzarlas a 0,80 recortaba el 47 % del encuadre y, peor, obligaba a pedir
+   1,875x el ancho de la caja para cubrir el alto. Como esa resolución no existe
+   en el banco, el navegador terminaba ampliando: medido a 1440 DPR1, photo_09
+   ampliaba 1,73x y photo_02 1,44x. En cuadrado el recorte baja a 33 % y la
+   fuente alcanza a DPR1 y casi a DPR2. La variedad de la grilla la dan los
+   tramos de columna y los desfasajes verticales, no la proporción del marco. */
+.frame--square   { aspect-ratio: 1 / 1; }
+.frame--wide     { aspect-ratio: 3 / 2; }   /* la proporción nativa: recorte cero */
 
 /* Pie de foto: dice qué función cumple la imagen. Es el único sistema de
    etiquetas sobre imágenes de la página y no se repite sobre los títulos. */
 .figcap { display: flex; flex-direction: column; gap: 2px; margin-top: 12px; }
 .figcap__fn {
-  font-size: 0.72rem;
+  font-size: var(--micro);
   font-weight: 700;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -935,9 +1053,20 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    NUESTROS PRINCIPIOS — seis, en dos filas de tres
    ======================================================================== */
 .principles { padding-block: var(--gap-md) var(--gap-md-b); background: var(--marfil-2); }
+/* Cinco valores, cinco columnas.
+   Estaban en una grilla de tres, o sea 3 + 2 con un hueco abierto abajo a la
+   derecha que se lee como error de maquetación y no como aire. Se probó que el
+   primero ocupara dos columnas: cierra la grilla, pero una regla de doble ancho
+   sobre un texto de dos líneas promete más contenido del que hay, y de paso
+   inventa una jerarquía entre los cinco que el copy no tiene.
+   Cinco en una fila no necesita ninguna de las dos concesiones: no hay borde
+   dentado, no hay valor privilegiado, y las cinco reglas de arriba forman una
+   cadencia continua que se lee como sistema. Dos columnas en el rango
+   intermedio, donde cinco no entran: un huérfano al final de una lista de dos
+   se lee como lista que terminó, no como hueco. */
 .principles__list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(28px, 3.2vw, 46px) clamp(28px, 3.5vw, 52px);
 }
 .principle {
@@ -958,26 +1087,26 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   font-weight: 600;
   margin-bottom: 14px;
 }
+/* El disco ya no lo dibuja el CSS: viene en el propio SVG del estudio. Lo que
+   el CSS conserva es el color, via `currentColor`, para que la rotacion
+   oliva / terracota / azul siga siendo una decision del sistema y no un valor
+   quemado dentro de cinco archivos. La marca calada usa `--marfil`. */
 .principle__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
   width: 50px; height: 50px;
   flex-shrink: 0;
-  border-radius: 50%;
-  color: var(--marfil);
 }
-.principle__icon svg { width: 25px; height: 25px; }
-.principle__icon--oliva     { background: var(--oliva); }
-.principle__icon--terracota { background: var(--terracota); }
-.principle__icon--azul      { background: var(--azul); }
+.principle__icon svg { width: 100%; height: 100%; display: block; }
+.principle__icon--oliva     { color: var(--oliva); }
+.principle__icon--terracota { color: var(--terracota); }
+.principle__icon--azul      { color: var(--azul); }
 .principle__text { color: var(--cuerpo); font-size: var(--small); }
 
 /* ========================================================================
    COMERCIOS Y DISTRIBUIDORES — argumento + red real de distribución
    ======================================================================== */
 .trade { padding-block: var(--gap-sm) var(--gap-sm-b); background: var(--marfil); }
-.trade__intro p { color: var(--cuerpo); font-size: var(--small); }
+.trade__intro p { color: var(--cuerpo); font-size: var(--small); max-width: 58ch; }
 .trade__intro p + p { margin-top: 12px; }
 .trade__intro .claim { margin-top: 16px; margin-bottom: 16px; }
 
@@ -991,9 +1120,101 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   border-bottom: 2px solid var(--marron);
 }
 .trade__network-title { font-size: var(--h3); font-weight: 600; }
-.trade__network-head p { color: var(--cuerpo); font-size: var(--small); }
+.trade__network-head p { color: var(--cuerpo); font-size: var(--small); max-width: 56ch; }
+
+/* ========================================================================
+   DESPLEGABLES — provincias de la red y preguntas frecuentes
+   ========================================================================
+   `<details>` nativo, sin una línea de JavaScript. No es pereza: es lo único
+   que trae de fábrica el foco de teclado, el estado anunciado al lector de
+   pantalla, el funcionamiento con el script caído y —lo que ningún acordeón
+   hecho a mano consigue— la apertura automática cuando alguien busca con
+   Ctrl+F. El contenido está siempre en el DOM y siempre es indexable.
+
+   El marcador se dibuja con dos filetes de 1 px, que es el material con el que
+   esta página agrupa todo lo demás. Un signo + que se convierte en − girando,
+   no un chevron importado de otro sistema. */
+.faq__item > summary,
+.region > summary {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  cursor: pointer;
+  list-style: none;               /* mata el triángulo por defecto */
+  position: relative;
+  padding-right: 34px;            /* el hueco del marcador */
+  min-height: 44px;               /* área táctil, no sólo alto de texto */
+  align-content: center;
+  flex-wrap: wrap;
+}
+.faq__item > summary::-webkit-details-marker { display: none; }
+
+/* El marcador: dos filetes cruzados. El vertical se borra al abrir, así que
+   el + se vuelve − sin cambiar de caja ni saltar. */
+.faq__item > summary::before,
+.faq__item > summary::after,
+.region > summary::before,
+.region > summary::after {
+  content: "";
+  position: absolute;
+  right: 2px;
+  top: 0.62em;
+  width: 13px;
+  height: 1px;
+  background: currentColor;
+  opacity: 0.7;
+  transition: transform 0.28s var(--ease), opacity 0.28s var(--ease);
+}
+.faq__item > summary::after,
+.region > summary::after { transform: rotate(90deg); }
+.faq__item[open] > summary::after,
+.region[open] > summary::after { transform: rotate(0deg); opacity: 0; }
+.faq__item > summary:hover::before, .faq__item > summary:hover::after,
+.region > summary:hover::before,   .region > summary:hover::after { opacity: 1; }
+
+.faq__item > summary:focus-visible,
+.region > summary:focus-visible {
+  outline: 3px solid var(--focus, var(--naranja));
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+/* La apertura se anima donde el navegador lo permite; donde no, abre y cierra
+   en seco, que es el comportamiento nativo de siempre y no rompe nada. */
+@supports (interpolate-size: allow-keywords) {
+  :root { interpolate-size: allow-keywords; }
+  .faq__item::details-content,
+  .region::details-content {
+    block-size: 0;
+    overflow: hidden;
+    transition: block-size 0.32s var(--ease), content-visibility 0.32s allow-discrete;
+    transition-behavior: allow-discrete;
+  }
+  .faq__item[open]::details-content,
+  .region[open]::details-content { block-size: auto; }
+}
+
+/* La respuesta corta, visible con la pregunta plegada. */
+.faq__flag { color: var(--terracota-osc); font-weight: 700; }
+
+/* El conteo de la provincia: la prueba tiene que sobrevivir al pliegue. */
+.region__count {
+  font-family: var(--font-text);
+  font-size: var(--nota);
+  font-weight: 400;
+  letter-spacing: normal;
+  text-transform: none;
+  color: var(--cuerpo);
+  margin-left: auto;
+  padding-right: 4px;
+  font-variant-numeric: tabular-nums;
+}
 
 .network { display: grid; gap: clamp(26px, 2.8vw, 40px); }
+/* El filete pasó del h4 al <summary>: ahora la línea pertenece a la fila
+   entera, incluido el conteo de la derecha, y no sólo al nombre. */
+.region > summary { border-bottom: 1px solid var(--arena); padding-bottom: 10px; margin-bottom: 4px; }
+.region[open] > summary { margin-bottom: 10px; }
 .region__name {
   font-family: var(--font-text);
   font-size: var(--overline);
@@ -1001,9 +1222,6 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--terracota);
-  padding-bottom: 10px;
-  margin-bottom: 4px;
-  border-bottom: 1px solid var(--arena);
 }
 .dist {
   display: grid;
@@ -1013,7 +1231,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   padding: 16px 0;
   border-bottom: 1px solid var(--arena-3);
 }
-.dist__zone { font-family: var(--font-display); font-size: 1.06rem; font-weight: 600; color: var(--marron); line-height: 1.25; }
+.dist__zone { font-family: var(--font-display); font-size: var(--titulo-fila); font-weight: 600; color: var(--marron); line-height: 1.25; }
 .dist__who  { font-size: var(--small); color: var(--cuerpo); }
 .dist__where { font-size: var(--small); color: var(--cuerpo); line-height: 1.5; font-variant-numeric: tabular-nums; }
 /* Teléfonos y correos: son los enlaces que más se tocan de la página y los
@@ -1056,9 +1274,9 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(24px, 2.8vw, 40px) clamp(32px, 4vw, 64px);
 }
-.faq__item { border-top: 1px solid var(--arena-2); padding-top: 18px; }
-.faq__q { font-size: 1.08rem; font-weight: 600; line-height: 1.25; margin-bottom: 10px; }
-.faq__a { font-size: var(--small); color: var(--cuerpo); }
+.faq__item { border-top: 1px solid var(--arena-2); padding-top: 16px; }
+.faq__q { font-size: var(--titulo-fila); font-weight: 600; line-height: 1.3; margin: 0; }
+.faq__a { font-size: var(--small); color: var(--cuerpo); margin-top: 10px; padding-bottom: 4px; max-width: 60ch; }
 .faq__a b { color: var(--terracota-osc); font-weight: 700; }
 
 /* ========================================================================
@@ -1083,12 +1301,18 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 .contact__form { display: flex; flex-direction: column; gap: 16px; }
 .form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 
+/* Filete completo de 1px, no una franja lateral de 3. La franja es la regla
+   que el resto de la página respeta sin excepción, y acá no aportaba señal:
+   el aviso ya se separa del campo oliva por su fondo teñido y lo que dice lo
+   dice el texto. Mismo tratamiento que `.form-status.is-pending`, que es este
+   mismo mensaje en otro momento. Y es el borde que la regla de alto contraste
+   de más abajo ya daba por sentado. */
 .form-pending {
-  font-size: 0.84rem;
+  font-size: var(--nota);
   line-height: 1.5;
   color: var(--marfil);
   background: rgba(32, 27, 23, 0.22);
-  border-left: 3px solid var(--naranja);
+  border: 1px solid rgba(244, 240, 231, 0.45);
   padding: 12px 16px;
   border-radius: var(--radio);
 }
@@ -1153,7 +1377,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   display: flex;
   align-items: flex-start;
   gap: 6px;
-  font-size: 0.8rem;
+  font-size: var(--nota);
   font-weight: 500;
   color: #F6D9C2;
 }
@@ -1183,7 +1407,9 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   margin-bottom: 6px;
 }
 .contact__details dt svg { width: 17px; height: 17px; flex-shrink: 0; }
-.contact__details dd { font-size: var(--small); line-height: 1.55; color: var(--marfil); }
+/* 1,62 y no 1,55: misma compensación de claro sobre oscuro que el resto del
+   campo oliva, un poco más ceñida porque son datos cortos, no prosa. */
+.contact__details dd { font-size: var(--small); line-height: 1.62; letter-spacing: 0.01em; color: var(--marfil); }
 
 /* ========================================================================
    CIERRE — el segundo momento de display, con la marca.
@@ -1230,7 +1456,13 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    grilla trae `min-width: auto` por defecto y una palabra larga (un correo,
    "Gualeguaychú") lo empuja más allá de su columna.
    ======================================================================== */
-.story__inner { max-width: 94ch; }
+/* El tope de medida iba en el container, y el container se centra: la seccion
+   quedaba 258 px adentro por cada lado mientras todas las demas arrancan a 58
+   del borde. Un ancho de lectura mas corto es una decision buena; que el bloque
+   flote en el medio de un campo arena a sangre, no. El container vuelve a
+   alinear con la pagina y el tope de medida baja a las columnas, que es donde
+   hace falta: dos columnas de ~39 ch, alineadas al borde izquierdo comun. */
+.story__cols { max-width: 80ch; }
 .product__body { display: flex; flex-direction: column; min-width: 0; }
 .contact__data, .trade__intro { min-width: 0; }
 .trade__network { margin-top: clamp(28px, 3vw, 44px); }
@@ -1255,11 +1487,11 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 }
 .site-footer__brand { display: inline-flex; align-items: center; min-height: 44px; }
 .site-footer__mark { width: 112px; height: auto; color: var(--marfil); }
-.site-footer__desc { font-size: 0.84rem; color: var(--arena); margin-top: 6px; max-width: 30ch; }
+.site-footer__desc { font-size: var(--nota); color: var(--arena); margin-top: 6px; max-width: 30ch; }
 .site-footer__claim {
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 1rem;
+  font-size: var(--body);
   color: var(--marfil);
   margin-top: 10px;
 }
@@ -1268,7 +1500,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  font-size: 0.84rem;
+  font-size: var(--nota);
   color: var(--arena);
   transition: color 0.2s var(--ease);
 }
@@ -1276,7 +1508,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 
 /* Pie: bloque legal con los enlaces obligatorios debajo del copyright. */
 .site-footer__legal { display: grid; gap: 6px; justify-items: end; text-align: right; }
-.site-footer__legal p { font-size: 0.8rem; color: var(--arena-2); }
+.site-footer__legal p { font-size: var(--nota); color: var(--arena-2); }
 .site-footer__social { color: var(--arena); }
 .site-footer__legal-links { display: flex; flex-wrap: wrap; gap: 4px 18px; justify-content: flex-end; }
 .site-footer__legal-links a {
@@ -1295,23 +1527,70 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    REVELADOS — scroll-driven en CSS.
    El contenido está visible siempre: la animación no decide la visibilidad.
    ======================================================================== */
+/* El revelado cambió dos veces de criterio, y las dos por medición.
+
+   Primero, el ALCANCE. Había 34 `.reveal`: diecinueve eran secciones enteras o
+   cabeceras, o sea la misma entrada idéntica repetida en toda la página. Eso no
+   es coreografía, es un reflejo — y es de los tells más reconocibles que hay.
+   Quedan trece, y sólo donde hay hermanos reales que escalonar por su posición:
+   las cuatro figuras del paisaje, los cinco principios y las cuatro preguntas.
+   Cada uno tiene su propia línea de tiempo, así que el escalonado sale de dónde
+   está en la grilla, no de un `animation-delay` fijo — con un timeline de scroll
+   no hay reloj que retrasar, lo que se corre es el rango.
+
+   Segundo, la MECÁNICA. El fotograma inicial era `opacity: 0` con modo de
+   relleno `both`, que aplica ese estado también fuera del rango activo. Medido:
+   en una captura de página completa sin scrollear, 145 de 193 bandas salían de
+   un solo color. El usuario que scrollea nunca lo veía, pero cualquier servicio
+   de captura sí. Ahora el revelado es sólo desplazamiento: el contenido está
+   visible siempre y el movimiento se suma encima, que es lo que el sistema
+   declara como regla y antes no cumplía.
+
+   `screen` a propósito: al imprimir no hay scroll. */
 @supports (animation-timeline: view()) {
   @media screen and (prefers-reduced-motion: no-preference) {
-    /* `screen` a propósito: al imprimir no hay scroll, así que una animación
-       de entrada dejaría media página en blanco. */
     .reveal {
       animation: reveal-in linear both;
       animation-timeline: view();
-      animation-range: entry 8% cover 22%;
+      animation-range: entry 5% cover 20%;
     }
-    /* Cada figura de la grilla de paisaje tiene su propia línea de tiempo, así
-       que el escalonado sale de su posición real en la grilla y no de un
-       delay fijo: entra cuando le toca entrar. Con animation-timeline el
-       animation-delay no sirve —no hay reloj, hay scroll—; el rango se corre. */
-    .landscape__grid > li { animation-range: entry 5% cover 22%; }
     @keyframes reveal-in {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: none; }
+      from { transform: translateY(14px); }
+      to   { transform: none; }
+    }
+
+    /* El lockup entra distinto que una figura de lista, porque no es una figura
+       de lista: es la tesis de la página —Olivzán está contenido en Gaddi— y el
+       único elemento que flota sobre la costura entre dos campos de color. Sube
+       el doble que el revelado genérico y llega desde apenas más chico, así que
+       se lee como una lámina que se apoya, no como un bloque que aparece.
+       Rango más largo para que el asentamiento se perciba, no se adivine. */
+    .endorse {
+      animation: lockup-apoya linear both;
+      animation-timeline: view();
+      animation-range: entry 10% cover 38%;
+    }
+    @keyframes lockup-apoya {
+      from { transform: translateY(28px) scale(0.972); }
+      to   { transform: none; }
+    }
+
+    /* Paralaje acotado, sólo en la panorámica de Origen.
+       Es la única fotografía de la página que ocupa medio campo a sangre y no
+       tiene pie de función: su trabajo es ambiental, y un desplazamiento lento
+       contra el scroll es lo que le da profundidad al campo azul de al lado.
+       El 4 % de recorrido sale de la escala 1.08 del `img`: se mueve dentro de
+       lo que sobra, así que nunca descubre un borde.
+       Sólo acá. Repetirlo en cada foto sería el mismo reflejo uniforme que este
+       archivo acaba de sacarse de encima. */
+    .territory__media img {
+      animation: panoramica-paralaje linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+    @keyframes panoramica-paralaje {
+      from { transform: scale(1.08) translateY(-2%); }
+      to   { transform: scale(1.08) translateY(2%); }
     }
   }
 }
@@ -1337,11 +1616,24 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
     background: var(--marfil);
     padding: 96px var(--margin-lateral) 48px;
     transform: translateX(100%);
-    transition: transform 0.35s var(--ease);
+    /* `visibility` saca al panel cerrado del orden de tabulación. Sin esto el
+       panel está fuera de pantalla pero sigue siendo enfocable: se tabulaba por
+       cinco enlaces invisibles antes de llegar al contenido, con el foco
+       aterrizando en x=410 sobre un viewport de 390. WCAG 2.4.3 y 2.4.11.
+       `translateX` solo no alcanza y `display: none` mataría la transición.
+       El retardo de 0,35 s al cerrar deja que el panel termine de salir antes
+       de desaparecer; al abrir se aplica en el acto. Hereda a los hijos, así
+       que resuelve los cinco enlaces con una sola declaración. */
+    visibility: hidden;
+    transition: transform 0.35s var(--ease), visibility 0s linear 0.35s;
     box-shadow: -30px 0 60px -30px rgba(32, 27, 23, 0.6);
     overflow-y: auto;
   }
-  .site-header--nav-open .nav__panel { transform: translateX(0); }
+  .site-header--nav-open .nav__panel {
+    transform: translateX(0);
+    visibility: visible;
+    transition: transform 0.35s var(--ease), visibility 0s;
+  }
   .site-header--nav-open .nav__toggle { color: var(--tinta); }
   .nav__list { flex-direction: column; align-items: flex-start; gap: 4px; }
   .nav__list a {
@@ -1373,8 +1665,9 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   .territory__panel { order: 2; padding: clamp(44px, 6.5vw, 68px) var(--margin-lateral); }
   .territory__media { order: 1; min-height: 300px; height: 44vw; max-height: 420px; }
 
-  .variety__inner { grid-template-columns: 1fr; gap: 32px; }
-  .variety__media img { aspect-ratio: 16 / 10; }
+  /* En una columna el titular deja de necesitar tope: es su propia línea. */
+  .variety__inner { grid-template-columns: 1fr; gap: 24px; }
+  .variety__lead .section-title { max-width: 18ch; }
 
   .process__inner { grid-template-columns: 1fr; gap: 32px; }
   .process__media img { aspect-ratio: 16 / 10; }
@@ -1383,15 +1676,20 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   .product__row { grid-template-columns: minmax(0, 0.7fr) minmax(0, 1.3fr); }
   .spec { margin-top: 0; }
 
-  .principles__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
   .landscape__head { grid-template-columns: 1fr; align-items: start; gap: 18px; }
   .landscape__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: clamp(40px, 6vw, 64px); }
-  .landscape__grid > li { grid-column: auto; align-self: auto; margin-top: 0; }
+  /* `:nth-child(n)` y no `> li` a secas. Sin esa pseudo-clase el selector pesa
+     (0,1,1) y pierde contra los `:nth-child(1..4)` de arriba, que pesan (0,2,1):
+     los tramos de la grilla de doce columnas sobrevivían sobre un template de
+     dos, y el navegador creaba pistas implícitas para llegar a la columna 13.
+     Medido antes del arreglo: a 1024 la grilla resolvía a doce pistas con
+     cuatro en 0px, y las cuatro fotos salían a 274 / 357 / 186 / 323 px —
+     dispersión de 1,92× donde la diseñada es 1,53×. El mismo error estaba en el
+     bloque de ≤720 y se corrigió igual; éste se había quedado atrás. */
+  .landscape__grid > li:nth-child(n) { grid-column: auto; align-self: auto; margin-top: 0; }
   /* La asimetría no se apaga en tablet: la columna derecha baja medio paso.
      Sin esto la sección se vuelve la grilla de cuatro iguales que evita. */
   .landscape__grid > li:nth-child(even) { margin-top: clamp(24px, 5vw, 56px); }
-  .landscape__foot { grid-template-columns: 1fr; gap: 14px; }
 
   .closing__inner { grid-template-columns: 1fr; gap: 28px; }
 
@@ -1407,6 +1705,15 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 }
 
 /* ---- Columnas a una ≤ 860px ---- */
+/* Los cinco valores en una sola fila. Por debajo de 1100 px cada columna caería
+   bajo los 200 px y el título con su círculo dejaría de entrar en una línea. */
+@media (min-width: 1100px) {
+  .principles__list {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(24px, 2.4vw, 34px);
+  }
+}
+
 @media (max-width: 860px) {
   .principles__list { grid-template-columns: 1fr; gap: 0; }
   .principle { padding-right: 0; padding-block: 24px 0; border-top: 1px solid var(--arena-2); }
@@ -1420,12 +1727,16 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
 
 /* ---- Mobile ≤ 720px: recomponer, no encoger ---- */
 @media (max-width: 720px) {
-  /* El cuerpo secundario sube de 14,4 a 15,2 px: a 390 px, 14,4 es incómodo
-     para leer párrafos largos. Los inputs quedan en 16 px, que es lo que
-     evita el auto-zoom de iOS. */
-  :root { --header-h: 70px; --small: 0.95rem; }
+  /* `--small` ya vale 0,95rem en todos los anchos; acá sólo baja el header.
+     Los inputs quedan en 16 px, que es lo que evita el auto-zoom de iOS. */
+  :root { --header-h: 70px; }
 
-  .hero { min-height: 92svh; padding-top: calc(var(--header-h) + 20px); }
+  /* 82svh y no 92. A 390x844 un hero de 92svh mide 390x828: proporción 0,47
+     contra una fotografía de 1,78, o sea 74 % del encuadre recortado y un
+     pedido de resolución de 3,8x el ancho del viewport que ninguna fuente
+     puede cubrir. Bajando a 82svh el recorte afloja y el contenido de abajo
+     deja de quedar tan lejos del primer pliegue. */
+  .hero { min-height: 82svh; padding-top: calc(var(--header-h) + 20px); }
   /* En vertical la foto se recorta al 37 % de su ancho: encuadre sobre el
      grupo de botellas, no sobre una sola. */
   .hero__photo { object-position: 60% center; }
@@ -1447,6 +1758,17 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   .conditions li:nth-child(n+3) { border-top: 1px solid rgba(207, 196, 177, 0.32); margin-top: 4px; }
 
   .landscape__grid { grid-template-columns: 1fr; row-gap: 36px; }
+  /* Los tramos de la grilla de doce columnas hay que apagarlos explícitamente.
+     `grid-template-columns: 1fr` define UNA pista explícita, pero los
+     `grid-column: 1 / 6`, `7 / 13`, `2 / 8` y `9 / 13` de los <li> siguen
+     vigentes y hacen que el navegador cree pistas implícitas para llegar a la
+     columna 13. Medido a 390: doce pistas de ~16 px y las cuatro fotos a 129,
+     172, 178 y 123 px sobre un contenedor de 350. Miniaturas desparejas, en la
+     única sección cuyo argumento es la fotografía. Con `1 / -1` cada figura
+     vuelve a ocupar el ancho completo.
+     Misma especificidad que las reglas de arriba (0,2,1) y va después, así que
+     gana sin necesidad de !important. */
+  .landscape__grid > li:nth-child(n) { grid-column: 1 / -1; }
   .landscape__grid > li:nth-child(even) { margin-top: 0; }
 
   .product__row { grid-template-columns: 1fr; gap: 20px; }
@@ -1475,7 +1797,7 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
    ======================================================================== */
 @media (forced-colors: active) {
   .field input, .field textarea, .field select,
-  .form-status, .form-pending, .endorse, .umbrella { border: 1px solid CanvasText; }
+  .form-status, .form-pending, .endorse { border: 1px solid CanvasText; }
   .btn { border: 1px solid ButtonText; }
   /* Los círculos de los principios se definen sólo por fondo de color. */
   .principle__icon { forced-color-adjust: none; }
@@ -1515,9 +1837,11 @@ h1, h2, h3, h4, p, dd, dt, address, li { overflow-wrap: break-word; }
   text-underline-offset: 3px;
 }
 .legal a:not(.link-arrow):hover { color: var(--marron); }
+/* Filete completo, no franja lateral: misma corrección que `.form-pending`.
+   El tinte terracota al 9 % ya separa el aviso del marfil. */
 .legal__aviso {
   background: rgba(151, 62, 22, 0.09);
-  border-left: 3px solid var(--terracota);
+  border: 1px solid rgba(151, 62, 22, 0.32);
   border-radius: var(--radio);
   padding: 16px 20px;
   margin-bottom: 28px;
